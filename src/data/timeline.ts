@@ -5,7 +5,7 @@ export interface TimelineItem {
 	id: string;
 	title: string;
 	description: string;
-	type: "education" | "work" | "project" | "achievement";
+	type: "work" | "certificate" | "personal" | "learning" | "project";
 	startDate: string;
 	endDate?: string; // If empty, it means current
 	location?: string;
@@ -24,95 +24,55 @@ export interface TimelineItem {
 }
 
 export const timelineData: TimelineItem[] = [
+	// 当前状态 - 只有当前正在进行的项目（没有endDate）
 	{
-		id: "current-study",
-		title: "Studying Computer Science and Technology",
-		description:
-			"Currently studying Computer Science and Technology, focusing on web development and software engineering.",
-		type: "education",
-		startDate: "2022-09-01",
-		location: "Beijing",
-		organization: "Beijing Institute of Technology",
-		skills: ["Java", "Python", "JavaScript", "HTML/CSS", "MySQL"],
-		achievements: [
-			"Current GPA: 3.6/4.0",
-			"Completed data structures and algorithms course project",
-			"Participated in multiple course project developments",
-		],
-		icon: "material-symbols:school",
-		color: "#059669",
-		featured: true,
-	},
-	{
-		id: "mizuki-blog-project",
-		title: "Mizuki Personal Blog Project",
-		description:
-			"A personal blog website developed using the Astro framework as a practical project for learning frontend technologies.",
-		type: "project",
-		startDate: "2024-06-01",
-		endDate: "2024-08-01",
-		skills: ["Astro", "TypeScript", "Tailwind CSS", "Git"],
-		achievements: [
-			"Mastered modern frontend development tech stack",
-			"Learned responsive design and user experience optimization",
-			"Completed the full process from design to deployment",
-		],
-		links: [
-			{
-				name: "GitHub Repository",
-				url: "https://github.com/example/mizuki-blog",
-				type: "project",
-			},
-			{
-				name: "Live Demo",
-				url: "https://mizuki-demo.example.com",
-				type: "website",
-			},
-		],
-		icon: "material-symbols:code",
-		color: "#7C3AED",
-		featured: true,
-	},
-	{
-		id: "summer-internship-2024",
-		title: "Frontend Development Intern",
-		description:
-			"Summer internship at an internet company, participating in frontend development of web applications.",
+		id: "current-internship",
+		title: "上海某主机安全厂商实习",
+		description: "目前在主机安全厂商实习，参与安全服务相关工作",
 		type: "work",
-		startDate: "2024-07-01",
-		endDate: "2024-08-31",
-		location: "Beijing",
-		organization: "TechStart Internet Company",
-		position: "Frontend Development Intern",
-		skills: ["React", "JavaScript", "CSS3", "Git", "Figma"],
-		achievements: [
-			"Completed user interface component development",
-			"Learned team collaboration and code standards",
-			"Received outstanding internship performance certificate",
-		],
+		startDate: "2025-07-01",
+		location: "上海",
+		position: "安全服务工程师",
+		skills: ["主机安全", "安全服务", "应急响应"],
 		icon: "material-symbols:work",
 		color: "#DC2626",
 		featured: true,
 	},
+
+	// 历史记录 - 工作经历（有明确的endDate）
 	{
-		id: "web-development-course",
-		title: "Completed Web Development Online Course",
-		description:
-			"Completed a full-stack web development online course, systematically learning frontend and backend development technologies.",
-		type: "achievement",
-		startDate: "2024-01-15",
-		endDate: "2024-05-30",
-		organization: "Mooc Website",
-		skills: ["HTML", "CSS", "JavaScript", "Node.js", "Express"],
+		id: "beijing-threat-intelligence-internship",
+		title: "北京某威胁情报安全厂商实习",
+		description: "在北京威胁情报安全厂商实习，参与安全巡检、渗透测试、驻场支持和攻防演练等工作",
+		type: "work",
+		startDate: "2025-03-10",
+		endDate: "2025-06-01",
+		location: "北京",
+		position: "安全服务工程师",
+		skills: ["安全巡检", "渗透测试", "应急响应", "攻防演练"],
 		achievements: [
-			"Received course completion certificate",
-			"Completed 5 practical projects",
-			"Mastered full-stack development fundamentals",
+			"完成14次安全巡检任务",
+			"执行13天渗透测试，发现多处漏洞",
+			"参与新奥能源、国家电网攻防演练",
+			"成功处置XRed、银狐等恶意木马"
 		],
+		icon: "material-symbols:work",
+		color: "#DC2626",
+	},
+
+	// 历史记录 - 证书（有明确的获得日期，不是持续性的）
+	{
+		id: "cisp-pte-certificate",
+		title: "CISP-PTE认证",
+		description: "获得国家注册信息安全专业人员-渗透测试工程师认证",
+		type: "certificate",
+		startDate: "2024-10-26",
+		endDate: "2024-10-26", // 证书获得是特定日期，不是持续状态
+		organization: "中国信息安全测评中心",
 		links: [
 			{
-				name: "Course Certificate",
-				url: "https://certificates.example.com/web-dev",
+				name: "CISP-PTE认证",
+				url: "https://www.itsec.gov.cn/",
 				type: "certificate",
 			},
 		],
@@ -120,114 +80,169 @@ export const timelineData: TimelineItem[] = [
 		color: "#059669",
 	},
 	{
-		id: "student-management-system",
-		title: "Student Management System Course Project",
-		description:
-			"Final project for the database course, developed a complete student information management system.",
-		type: "project",
-		startDate: "2023-11-01",
-		endDate: "2023-12-15",
-		skills: ["Java", "MySQL", "Swing", "JDBC"],
-		achievements: [
-			"Received excellent course project grade",
-			"Implemented complete CRUD functionality",
-			"Learned database design and optimization",
+		id: "computer-level-3-certificate",
+		title: "全国计算机等级考试三级",
+		description: "通过全国计算机等级考试三级-信息安全技术考试",
+		type: "certificate",
+		startDate: "2023-03",
+		endDate: "2023-03", // 考试通过是特定日期
+		organization: "教育部考试中心",
+		links: [
+			{
+				name: "计算机等级证书",
+				url: "https://www.neea.edu.cn/",
+				type: "certificate",
+			},
 		],
-		icon: "material-symbols:database",
-		color: "#EA580C",
+		icon: "material-symbols:verified",
+		color: "#059669",
 	},
 	{
-		id: "programming-contest",
-		title: "University Programming Contest",
-		description:
-			"Participated in a programming contest held by the university, improving algorithm and programming skills.",
-		type: "achievement",
-		startDate: "2023-10-20",
-		location: "Beijing Institute of Technology",
-		organization: "School of Computer Science",
-		skills: ["C++", "Algorithms", "Data Structures"],
+		id: "vocational-skill-certificate",
+		title: "职业技能等级证书-高级",
+		description: "获得网络与信息安全管理员高级职业技能等级证书",
+		type: "certificate",
+		startDate: "2024-12-04",
+		endDate: "2024-12-04", // 证书获得是特定日期
+		organization: "人力资源和社会保障部",
+		links: [
+			{
+				name: "职业技能证书",
+				url: "http://www.osta.org.cn/",
+				type: "certificate",
+			},
+		],
+		icon: "material-symbols:verified",
+		color: "#059669",
+	},
+
+	// 历史记录 - 个人经历（比赛和活动都有明确的日期）
+	{
+		id: "liaoning-vocational-competition",
+		title: "辽宁省第二届职业技能大赛",
+		description: "参加辽宁省第二届职业技能大赛网络安全赛项，获得银牌成绩",
+		type: "personal",
+		startDate: "2024-10-25",
+		endDate: "2024-10-25", // 比赛是特定日期
+		location: "辽宁",
+		organization: "辽宁省人力资源和社会保障厅",
 		achievements: [
-			"Won third prize in university contest",
-			"Improved algorithmic thinking ability",
-			"Strengthened programming fundamentals",
+			"网络安全赛项银牌",
+			"提升实战技能水平"
+		],
+		icon: "material-symbols:emoji-events",
+		color: "#7C3AED",
+		featured: true,
+	},
+	{
+		id: "datasea-challenge",
+		title: "\"中软国际--卓越杯\"大数据挑战赛",
+		description: "参加大数据挑战赛，获得二等奖",
+		type: "personal",
+		startDate: "2022-10-08",
+		endDate: "2022-10-08", // 比赛是特定日期
+		organization: "中软国际",
+		achievements: [
+			"大数据挑战赛二等奖",
+			"锻炼数据分析能力"
 		],
 		icon: "material-symbols:emoji-events",
 		color: "#7C3AED",
 	},
 	{
-		id: "part-time-tutor",
-		title: "Part-time Programming Tutor",
-		description:
-			"Provided programming tutoring for high school students, helping them learn Python basics.",
-		type: "work",
-		startDate: "2023-09-01",
-		endDate: "2024-01-31",
-		position: "Programming Tutor",
-		skills: ["Python", "Teaching", "Communication"],
+		id: "city-level-network-defense",
+		title: "地市级护网行动",
+		description: "参与地市级护网行动，担任攻击队员，表现优秀",
+		type: "personal",
+		startDate: "2024-09",
+		endDate: "2024-09", // 护网行动是特定月份
 		achievements: [
-			"Helped 3 students master Python basics",
-			"Improved expression and communication skills",
-			"Gained teaching experience",
+			"优秀攻击队员",
+			"实战攻防经验"
 		],
-		icon: "material-symbols:school",
-		color: "#059669",
+		icon: "material-symbols:security",
+		color: "#EA580C",
 	},
+
+	// 历史记录 - 学习经历（除了大学学习，其他都有明确的结束时间）
 	{
-		id: "high-school-graduation",
-		title: "High School Graduation",
-		description:
-			"Graduated from high school with excellent grades and was admitted to the Computer Science and Technology program at Beijing Institute of Technology.",
-		type: "education",
-		startDate: "2019-09-01",
-		endDate: "2022-06-30",
-		location: "Jinan, Shandong",
-		organization: "No.1 High School of Jinan",
+		id: "university-study",
+		title: "上大学啦！",
+		description: "进入辽宁工程技术大学网络工程专业学习，开启大学生活",
+		type: "learning",
+		startDate: "2022-09",
+		endDate: "2026-07", // 大学有明确的毕业时间
+		location: "辽宁",
+		organization: "辽宁工程技术大学",
+		position: "网络工程专业",
+		skills: ["网络工程", "计算机基础"],
 		achievements: [
-			"College entrance exam score: 620",
-			"Received municipal model student award",
-			"Won provincial second prize in math competition",
+			"获得科技奖学金",
+			"系统学习专业知识"
 		],
 		icon: "material-symbols:school",
 		color: "#2563EB",
+		featured: true,
 	},
 	{
-		id: "first-programming-experience",
-		title: "First Programming Experience",
-		description:
-			"First encountered programming in high school IT class, started learning Python basic syntax.",
-		type: "education",
-		startDate: "2021-03-01",
-		skills: ["Python", "Basic Programming Concepts"],
+		id: "first-website-build",
+		title: "第一次搭建网站",
+		description: "初次尝试搭建个人网站，学习Web开发基础知识",
+		type: "learning",
+		startDate: "2023-10",
+		endDate: "2023-10", // 学习完成是特定月份
+		skills: ["HTML", "CSS", "JavaScript", "Web开发"],
 		achievements: [
-			'Completed first "Hello World" program',
-			"Learned basic loops and conditional statements",
-			"Developed interest in programming",
+			"完成第一个网站项目",
+			"掌握Web开发基础"
 		],
 		icon: "material-symbols:code",
 		color: "#7C3AED",
 	},
 	{
-		id: "english-certificate",
-		title: "English CET-4 Certificate",
-		description:
-			"Passed the College English Test Band 4, acquired basic English reading and writing skills.",
-		type: "achievement",
-		startDate: "2023-06-15",
-		organization: "National College English Test Committee",
+		id: "network-security-learning",
+		title: "学习网络安全",
+		description: "开始系统学习网络安全知识，进入网络安全领域",
+		type: "learning",
+		startDate: "2024-07",
+		endDate: "2024-07", // 学习开始是特定月份
+		skills: ["网络安全", "渗透测试", "漏洞挖掘"],
 		achievements: [
-			"CET-4 score: 550",
-			"Improved English technical documentation reading ability",
-			"Laid foundation for future study of foreign technical materials",
+			"建立网络安全知识体系",
+			"开始实战练习"
 		],
-		links: [
-			{
-				name: "CET-4 Certificate",
-				url: "https://certificates.example.com/cet4",
-				type: "certificate",
-			},
+		icon: "material-symbols:security",
+		color: "#EA580C",
+	},
+	{
+		id: "first-ai-exposure",
+		title: "第一次了解AI",
+		description: "开始接触和学习人工智能相关知识，了解AI技术发展",
+		type: "learning",
+		startDate: "2025-03",
+		endDate: "2025-03", // 学习开始是特定月份
+		skills: ["人工智能", "机器学习"],
+		achievements: [
+			"建立AI基础知识",
+			"了解AI应用场景"
 		],
-		icon: "material-symbols:translate",
-		color: "#059669",
+		icon: "material-symbols:psychology",
+		color: "#7C3AED",
+	},
+	{
+		id: "first-ai-jailbreak",
+		title: "第一次对AI产品jailbreak",
+		description: "成功对多个AI模型进行越狱测试，包括Claude 3.5/3.7、微步XGTP、DeepSeek、ChatGPT等",
+		type: "learning",
+		startDate: "2025-03-17",
+		endDate: "2025-03-17", // 特定日期的成就
+		skills: ["AI安全", "提示词工程", "越狱技术"],
+		achievements: [
+			"掌握AI越狱技术",
+			"成功实践多个AI模型"
+		],
+		icon: "material-symbols:psychology",
+		color: "#7C3AED",
 	},
 ];
 
@@ -235,11 +250,11 @@ export const timelineData: TimelineItem[] = [
 export const getTimelineStats = () => {
 	const total = timelineData.length;
 	const byType = {
-		education: timelineData.filter((item) => item.type === "education").length,
 		work: timelineData.filter((item) => item.type === "work").length,
-		project: timelineData.filter((item) => item.type === "project").length,
-		achievement: timelineData.filter((item) => item.type === "achievement")
-			.length,
+		certificate: timelineData.filter((item) => item.type === "certificate").length,
+		personal: timelineData.filter((item) => item.type === "personal").length,
+		learning: timelineData.filter((item) => item.type === "learning").length,
+		project: timelineData.filter((item) => item.type === "project").length, // 添加项目类型统计
 	};
 
 	return { total, byType };
@@ -271,9 +286,14 @@ export const getFeaturedTimeline = () => {
 		);
 };
 
-// Get current ongoing items
+// Get current ongoing items (only items without endDate)
 export const getCurrentItems = () => {
 	return timelineData.filter((item) => !item.endDate);
+};
+
+// Get historical items (only items with endDate)
+export const getHistoricalItems = () => {
+	return timelineData.filter((item) => item.endDate);
 };
 
 // Calculate total work experience
@@ -289,8 +309,21 @@ export const getTotalWorkExperience = () => {
 		totalMonths += diffMonths;
 	});
 
-	return {
-		years: Math.floor(totalMonths / 12),
-		months: totalMonths % 12,
-	};
+	const years = Math.floor(totalMonths / 12);
+	const months = totalMonths % 12;
+
+	// 如果工作经验少于1年，显示月份；否则显示年份
+	if (years === 0) {
+		return {
+			years: 0,
+			months: months,
+			display: `${months}个月`
+		};
+	} else {
+		return {
+			years: years,
+			months: months,
+			display: `${years}年${months > 0 ? months + '个月' : ''}`
+		};
+	}
 };

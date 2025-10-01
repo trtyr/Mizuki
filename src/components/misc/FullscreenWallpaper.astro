@@ -19,29 +19,6 @@ if (!config.enable) {
 const getImageSources = async () => {
 	let srcConfig = config.src;
 
-	// 如果banner关闭且启用了图片API，使用API图片
-	if (
-		!siteConfig.banner.enable &&
-		siteConfig.banner.imageApi?.enable &&
-		siteConfig.banner.imageApi?.url
-	) {
-		try {
-			const response = await fetch(siteConfig.banner.imageApi.url);
-			const text = await response.text();
-			const apiImages = text.split("\n").filter((line) => line.trim());
-
-			if (apiImages.length > 0) {
-				// 将API图片同时用于桌面端和移动端
-				return {
-					desktop: apiImages,
-					mobile: apiImages,
-				};
-			}
-		} catch (error) {
-			console.warn("Failed to fetch images from API for wallpaper:", error);
-		}
-	}
-
 	const { desktop, mobile } = srcConfig;
 	return {
 		desktop: Array.isArray(desktop) ? desktop : desktop ? [desktop] : [],
@@ -85,7 +62,7 @@ const getPositionClass = (pos: string) => {
 const positionClass = getPositionClass(position);
 ---
 
-<div 
+<div
 	class:list={[
 		"fixed inset-0 w-full h-full overflow-hidden pointer-events-none",
 		className
@@ -99,7 +76,7 @@ const positionClass = getPositionClass(position);
 			{imageSources.desktop.map((src, index) => {
 				const isLocal = !src.startsWith("http");
 				const imageClass = `absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${positionClass}`;
-				
+
 				if (isLocal) {
 					// 对于本地图片，使用img标签而不是Image组件
 					return (
@@ -132,7 +109,7 @@ const positionClass = getPositionClass(position);
 			{imageSources.mobile.map((src, index) => {
 				const isLocal = !src.startsWith("http");
 				const imageClass = `absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${positionClass}`;
-				
+
 				if (isLocal) {
 					// 对于本地图片，使用img标签而不是Image组件
 					return (
@@ -174,7 +151,7 @@ const positionClass = getPositionClass(position);
 				if (items.length <= 1) return;
 
 				let currentIndex = 0;
-				
+
 				// 初始化：显示第一张，隐藏其他
 				items.forEach((item, index) => {
 					item.style.opacity = index === 0 ? '1' : '0';
@@ -184,10 +161,10 @@ const positionClass = getPositionClass(position);
 				setInterval(() => {
 					// 隐藏当前图片
 					items[currentIndex].style.opacity = '0';
-					
+
 					// 切换到下一张
 					currentIndex = (currentIndex + 1) % items.length;
-					
+
 					// 显示下一张图片
 					items[currentIndex].style.opacity = '1';
 				}, carouselInterval * 1000);

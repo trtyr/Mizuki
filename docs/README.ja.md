@@ -1,6 +1,6 @@
-# 🌸 Mizuki  
-![Node.js >= 20](https://img.shields.io/badge/node.js-%3E%3D20-brightgreen) 
-![pnpm >= 9](https://img.shields.io/badge/pnpm-%3E%3D9-blue) 
+# 🌸 Mizuki
+![Node.js >= 20](https://img.shields.io/badge/node.js-%3E%3D20-brightgreen)
+![pnpm >= 9](https://img.shields.io/badge/pnpm-%3E%3D9-blue)
 ![Astro](https://img.shields.io/badge/Astro-5.12.8-orange)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -32,8 +32,6 @@
 [**中文繁体**](./README.tw.md) /
 
 ## 🆕 v4.9 アップデート
-- **Pio Live2D統合**: Pio Live2Dキャラクターを統合し、可愛らしいインタラクティブな仲間を提供してユーザーエンゲージメントを向上させます。
-- **高度な設定**: モデルパス、位置、サイズ、会話内容など、`src/config.ts`で詳細な設定をサポートし、パーソナライズされたニーズに対応します。
 - **シームレスなナビゲーション**: 「ホームに戻る」機能は、テーマに組み込まれたSwupを使用して、スムーズでリフレッシュなしのページ遷移を提供します。
 
 ## 🆕 v4.3 アップデート
@@ -129,7 +127,7 @@
    ```bash
    # pnpmがインストールされていない場合はインストール
    npm install -g pnpm
-   
+
    # プロジェクトの依存関係をインストール
    pnpm install
    ```

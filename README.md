@@ -1,6 +1,6 @@
-# 🌸 Mizuki  
-![Node.js >= 20](https://img.shields.io/badge/node.js-%3E%3D20-brightgreen) 
-![pnpm >= 9](https://img.shields.io/badge/pnpm-%3E%3D9-blue) 
+# 🌸 Mizuki
+![Node.js >= 20](https://img.shields.io/badge/node.js-%3E%3D20-brightgreen)
+![pnpm >= 9](https://img.shields.io/badge/pnpm-%3E%3D9-blue)
 ![Astro](https://img.shields.io/badge/Astro-5.12.8-orange)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -33,8 +33,6 @@ A modern, feature-rich static blog template built with [Astro](https://astro.bui
 [**中文繁体**](./docs/README.tw.md) /
 
 ## 🆕 v4.9 Update
-- **Pio Live2D Integration**: Added Pio Live2D character, providing a cute interactive companion to enhance user engagement.
-- **Highly Configurable**: Supports detailed configuration in `src/config.ts`, including model path, position, size, dialogue content, etc., to meet personalized needs.
 - **Seamless Navigation**: The "Back to Home" feature now uses the theme's built-in Swup for smooth, no-refresh page transitions.
 
 ## 🆕 v4.3 Update
@@ -130,7 +128,7 @@ A modern, feature-rich static blog template built with [Astro](https://astro.bui
    ```bash
    # Install pnpm if not already installed
    npm install -g pnpm
-   
+
    # Install project dependencies
    pnpm install
    ```

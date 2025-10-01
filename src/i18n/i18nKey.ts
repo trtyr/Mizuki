@@ -148,6 +148,7 @@ enum I18nKey {
 	timelineWork = "timelineWork",
 	timelineProject = "timelineProject",
 	timelineAchievement = "timelineAchievement",
+	timelinePersonal = "timelinePersonal",
 	timelinePresent = "timelinePresent",
 	timelineLocation = "timelineLocation",
 	timelineDescription = "timelineDescription",
@@ -166,6 +167,7 @@ enum I18nKey {
 	timelineWorkPositions = "timelineWorkPositions",
 	timelineCurrentRole = "timelineCurrentRole",
 	timelineEmployed = "timelineEmployed",
+	timelineInternship = "timelineInternship",
 	timelineAvailable = "timelineAvailable",
 
 	// 密码保护

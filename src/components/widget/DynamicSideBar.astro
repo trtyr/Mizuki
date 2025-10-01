@@ -9,7 +9,6 @@ import Announcement from "./Announcement.astro";
 import Categories from "./Categories.astro";
 import Tags from "./Tags.astro";
 import TOC from "./TOC.astro";
-import MusicPlayer from "./MusicPlayer.svelte";
 
 interface Props {
 	class?: string;
@@ -30,7 +29,6 @@ const componentMap = {
 	categories: Categories,
 	tags: Tags,
 	toc: TOC,
-	"music-player": MusicPlayer,
 	...customComponents, // 合并自定义组件
 };
 
@@ -105,11 +103,11 @@ const hasAnyComponents = hasTopComponents || hasStickyComponents;
 			<div class="sidebar-top-section flex flex-col w-full gap-4 mb-4" data-position="top">
 				{topComponentsToRender.map((renderData) => {
 					if (!renderData) return null;
-					
+
 					const { Component, props, config } = renderData;
 					return (
-						<div 
-							class="widget-container" 
+						<div
+							class="widget-container"
 							data-widget-type={config.type}
 							data-widget-order={config.order}
 							data-widget-position={config.position}
@@ -120,21 +118,21 @@ const hasAnyComponents = hasTopComponents || hasStickyComponents;
 				})}
 			</div>
 		)}
-		
+
 		<!-- 粘性组件区域 -->
 		{hasStickyComponents && (
-			<div 
-				id="sidebar-sticky" 
-				class="sidebar-sticky-section transition-all duration-700 flex flex-col w-full gap-4 top-4 sticky top-4" 
+			<div
+				id="sidebar-sticky"
+				class="sidebar-sticky-section transition-all duration-700 flex flex-col w-full gap-4 top-4 sticky top-4"
 				data-position="sticky"
 			>
 				{stickyComponentsToRender.map((renderData) => {
 					if (!renderData) return null;
-					
+
 					const { Component, props, config } = renderData;
 					return (
-						<div 
-							class="widget-container" 
+						<div
+							class="widget-container"
 							data-widget-type={config.type}
 							data-widget-order={config.order}
 							data-widget-position={config.position}
@@ -163,50 +161,50 @@ const hasAnyComponents = hasTopComponents || hasStickyComponents;
 		--sidebar-gap: 1rem;
 		--sidebar-animation-duration: 0.3s;
 	}
-	
+
 	/* 组件容器样式 */
 	.widget-container {
 		transition: all var(--sidebar-animation-duration) ease;
 	}
-	
+
 	/* 响应式断点样式 */
 	@media (max-width: 768px) {
 		#dynamic-sidebar {
 			display: var(--sidebar-mobile-display, block);
 		}
-		
+
 		.sidebar-top-section,
 		.sidebar-sticky-section {
 			gap: calc(var(--sidebar-gap) * 0.75);
 		}
 	}
-	
+
 	@media (min-width: 769px) and (max-width: 1024px) {
 		#dynamic-sidebar {
 			display: var(--sidebar-tablet-display, block);
 		}
 	}
-	
+
 	@media (min-width: 1025px) {
 		#dynamic-sidebar {
 			display: var(--sidebar-desktop-display, block);
 		}
 	}
-	
+
 	/* 动画效果 */
 	.widget-container {
 		opacity: 0;
 		transform: translateY(20px);
 		animation: slideInUp 0.6s ease forwards;
 	}
-	
+
 	@keyframes slideInUp {
 		to {
 			opacity: 1;
 			transform: translateY(0);
 		}
 	}
-	
+
 	/* 占位符样式 */
 	.sidebar-placeholder {
 		border: 2px dashed currentColor;
@@ -218,7 +216,7 @@ const hasAnyComponents = hasTopComponents || hasStickyComponents;
 <!-- 增强的JavaScript功能 -->
 <script>
 	import { widgetManager } from "../../utils/widget-manager";
-	
+
 	/**
 	 * 动态侧边栏管理器
 	 * 提供更高级的功能，如组件的动态添加/移除、重排序等
@@ -226,21 +224,21 @@ const hasAnyComponents = hasTopComponents || hasStickyComponents;
 	class DynamicSidebarManager {
 		private sidebar: HTMLElement | null;
 		private resizeObserver: ResizeObserver | null = null;
-		
+
 		constructor() {
 			this.sidebar = document.getElementById('dynamic-sidebar');
 			this.init();
 		}
-		
+
 		init() {
 			if (!this.sidebar) return;
-			
+
 			this.setupResponsiveDisplay();
 			this.setupResizeObserver();
 			this.setupWidgetInteractions();
 			this.applyInitialAnimations();
 		}
-		
+
 		/**
 		 * 设置响应式显示
 		 */
@@ -248,16 +246,16 @@ const hasAnyComponents = hasTopComponents || hasStickyComponents;
 			this.updateResponsiveDisplay();
 			window.addEventListener('resize', () => this.updateResponsiveDisplay());
 		}
-		
+
 		/**
 		 * 更新响应式显示
 		 */
 		updateResponsiveDisplay() {
 			if (!this.sidebar) return;
-			
+
 			const breakpoints = widgetManager.getBreakpoints();
 			const width = window.innerWidth;
-			
+
 			let deviceType: 'mobile' | 'tablet' | 'desktop';
 			if (width < breakpoints.mobile) {
 				deviceType = 'mobile';
@@ -266,24 +264,24 @@ const hasAnyComponents = hasTopComponents || hasStickyComponents;
 			} else {
 				deviceType = 'desktop';
 			}
-			
+
 			const shouldShow = widgetManager.shouldShowSidebar(deviceType);
-			
+
 			this.sidebar.style.setProperty(
-				`--sidebar-${deviceType}-display`, 
+				`--sidebar-${deviceType}-display`,
 				shouldShow ? 'block' : 'none'
 			);
-			
+
 			// 添加设备类型到数据属性
 			this.sidebar.setAttribute('data-device-type', deviceType);
 		}
-		
+
 		/**
 		 * 设置尺寸观察器
 		 */
 		setupResizeObserver() {
 			if (!this.sidebar || !window.ResizeObserver) return;
-			
+
 			this.resizeObserver = new ResizeObserver((entries) => {
 				for (const entry of entries) {
 					const { width, height } = entry.contentRect;
@@ -291,51 +289,51 @@ const hasAnyComponents = hasTopComponents || hasStickyComponents;
 					console.debug(`Sidebar size changed: ${width}x${height}`);
 				}
 			});
-			
+
 			this.resizeObserver.observe(this.sidebar);
 		}
-		
+
 		/**
 		 * 设置组件交互
 		 */
 		setupWidgetInteractions() {
 			if (!this.sidebar) return;
-			
+
 			// 为每个组件容器添加交互功能
 			const widgetContainers = this.sidebar.querySelectorAll('.widget-container');
-			
+
 			widgetContainers.forEach((container) => {
 				const widgetType = container.getAttribute('data-widget-type');
-				
+
 				// 添加悬停效果
 				container.addEventListener('mouseenter', () => {
 					container.classList.add('widget-hover');
 				});
-				
+
 				container.addEventListener('mouseleave', () => {
 					container.classList.remove('widget-hover');
 				});
-				
+
 				// 可以添加更多交互逻辑
 				console.debug(`Widget ${widgetType} interaction setup complete`);
 			});
 		}
-		
+
 		/**
 		 * 应用初始动画
 		 */
 		applyInitialAnimations() {
 			if (!this.sidebar) return;
-			
+
 			const widgetContainers = this.sidebar.querySelectorAll('.widget-container');
-			
+
 			widgetContainers.forEach((container, index) => {
 				// 应用交错动画延迟
 				const delay = index * 100; // 每个组件延迟100ms
 				(container as HTMLElement).style.animationDelay = `${delay}ms`;
 			});
 		}
-		
+
 		/**
 		 * 销毁管理器
 		 */
@@ -346,10 +344,10 @@ const hasAnyComponents = hasTopComponents || hasStickyComponents;
 			}
 		}
 	}
-	
+
 	// 初始化动态侧边栏管理器
 	const dynamicSidebarManager = new DynamicSidebarManager();
-	
+
 	// 清理函数
 	window.addEventListener('beforeunload', () => {
 		dynamicSidebarManager.destroy();

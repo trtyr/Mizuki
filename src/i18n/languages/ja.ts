@@ -134,7 +134,8 @@ export const ja: Translation = {
 	[Key.timelineEducation]: "教育",
 	[Key.timelineWork]: "仕事",
 	[Key.timelineProject]: "プロジェクト",
-	[Key.timelineAchievement]: "成果",
+	[Key.timelineAchievement]: "証明書",
+	[Key.timelinePersonal]: "成果",
 	[Key.timelinePresent]: "現在",
 	[Key.timelineLocation]: "場所",
 	[Key.timelineDescription]: "説明",
@@ -153,6 +154,7 @@ export const ja: Translation = {
 	[Key.timelineWorkPositions]: "職位",
 	[Key.timelineCurrentRole]: "現在の役職",
 	[Key.timelineEmployed]: "在職中",
+	[Key.timelineInternship]: "インターンシップ",
 	[Key.timelineAvailable]: "利用可能",
 
 	// 密码保护

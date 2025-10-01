@@ -5,10 +5,8 @@ import type {
   FooterConfig,
   FullscreenWallpaperConfig,
   LicenseConfig,
-  MusicPlayerConfig,
   NavBarConfig,
   ProfileConfig,
-  SakuraConfig,
   SidebarLayoutConfig,
   SiteConfig,
 } from "./types/config";
@@ -53,7 +51,7 @@ export const siteConfig: SiteConfig = {
   },
 
   banner: {
-    enable: false, // 是否启动Banner壁纸模式
+    enable: true, // 是否启动Banner壁纸模式
 
     // 支持单张图片或图片数组，当数组长度 > 1 时自动启用轮播
     src: {
@@ -86,15 +84,6 @@ export const siteConfig: SiteConfig = {
 
       interval: 5, // 轮播间隔时间（秒）
     },
-
-    // PicFlow API支持(智能图片API)
-    imageApi: {
-      enable: false, // 启用图片API
-      url: "http://domain.com/api_v2.php?format=text&count=4", // API地址，返回每行一个图片链接的文本
-    },
-    // 这里需要使用PicFlow API的Text返回类型,所以我们需要format=text参数
-    // 项目地址:https://github.com/matsuzaka-yuki/PicFlow-API
-    // 请自行搭建API
 
     homeText: {
       enable: true, // 在主页显示自定义文本
@@ -133,43 +122,40 @@ export const siteConfig: SiteConfig = {
 
   // 字体配置
   font: {
-    zenMaruGothic: {
-      enable: true, // 启用全局圆体适合日语和英语，对中文适配一般
-    },
-    hanalei: {
-      enable: false, // 启用 Hanalei 字体作为全局字体，适合中文去使用
+    chineseEnglish: {
+      enable: true, // 启用中英文字体，英文使用 JetBrainsMono Nerd Font，中文使用 LXGW WenKai
     },
   },
   showLastModified: true, // 控制“上次编辑”卡片显示的开关
 };
 export const fullscreenWallpaperConfig: FullscreenWallpaperConfig = {
-  enable: true, // 启用全屏壁纸功能,非Banner模式下生效
+  enable: false, // 启用全屏壁纸功能,非Banner模式下生效
   src: {
-    desktop: [
-      "/assets/desktop-banner/d1.webp",
-      "/assets/desktop-banner/d2.webp",
-      "/assets/desktop-banner/d3.webp",
-      "/assets/desktop-banner/d4.webp",
-      "/assets/desktop-banner/d5.webp",
-      "/assets/desktop-banner/d6.webp",
-      "/assets/desktop-banner/d7.webp",
-      "/assets/desktop-banner/d8.webp",
-    ], // 桌面横幅图片
-    mobile: [
-      "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m1.webp",
-      "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m2.webp",
-      "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m3.webp",
-      "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m4.webp",
-      "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m5.webp",
-      "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m6.webp",
-      "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m7.webp",
-      "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m8.webp",
-    ], // 移动横幅图片
-  }, // 使用本地横幅图片
+      desktop: [
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/pc/1.webp",
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/pc/2.webp",
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/pc/7.webp",
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/pc/8.webp",
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/pc/13.webp",
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/pc/15.webp",
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/pc/17.webp",
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/pc/20.webp",
+      ], // 桌面横幅图片
+      mobile: [
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m1.webp",
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m2.webp",
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m3.webp",
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m4.webp",
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m5.webp",
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m6.webp",
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m7.webp",
+        "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/mobile/m8.webp",
+      ], // 移动横幅图片
+    }, // 使用本地横幅图片
   position: "center", // 壁纸位置，等同于 object-position
   carousel: {
     enable: true, // 启用轮播
-    interval: 1, // 轮播间隔时间（秒）
+    interval: 5, // 轮播间隔时间（秒）
   },
   zIndex: -1, // 层级，确保壁纸在背景层
   opacity: 0.8, // 壁纸透明度
@@ -181,44 +167,6 @@ export const navBarConfig: NavBarConfig = {
     LinkPreset.Home,
     LinkPreset.Archive,
     // 支持自定义导航栏链接,并且支持多级菜单,3.1版本新加
-    {
-      name: "Links",
-      url: "/links/",
-      icon: "material-symbols:link",
-      children: [
-        {
-          name: "GitHub",
-          url: "https://github.com/matsuzaka-yuki/Mizuki",
-          external: true,
-          icon: "fa6-brands:github",
-        },
-        {
-          name: "Bilibili",
-          url: "https://space.bilibili.com/701864046",
-          external: true,
-          icon: "fa6-brands:bilibili",
-        },
-        {
-          name: "Gitee",
-          url: "https://gitee.com/matsuzakayuki/Mizuki",
-          external: true,
-          icon: "mdi:git",
-        },
-      ],
-    },
-    {
-      name: "My",
-      url: "/content/",
-      icon: "material-symbols:person",
-      children: [
-        LinkPreset.Diary,
-        {
-          name: "Gallery",
-          url: "/albums/",
-          icon: "material-symbols:photo-library",
-        },
-      ],
-    },
     {
       name: "About",
       url: "/content/",
@@ -251,31 +199,26 @@ export const navBarConfig: NavBarConfig = {
 };
 
 export const profileConfig: ProfileConfig = {
-  avatar: "assets/images/avatar.png", // 相对于 /src 目录。如果以 '/' 开头，则相对于 /public 目录
-  name: "Mizuki",
-  bio: "The world is big, you have to go and see",
-  links: [
-    {
-      name: "Bilibli",
-      icon: "fa6-brands:bilibili",
-      url: "https://space.bilibili.com/701864046",
-    },
-    {
-      name: "Gitee",
-      icon: "mdi:git",
-      url: "https://gitee.com/matsuzakayuki",
-    },
-    {
-      name: "GitHub",
-      icon: "fa6-brands:github",
-      url: "https://github.com/matsuzaka-yuki",
-    },
-    {
-      name: "Discord",
-      icon: "fa6-brands:discord",
-      url: "https://discord.gg/MqW6TcQtVM",
-    },
-  ],
+	avatar: "https://image-hosting-1314508256.cos.ap-shanghai.myqcloud.com/person/avatar.png", // 相对于 /src 目录。如果以 '/' 开头，则相对于 /public 目录
+	name: "特让他也让",
+	bio: "玛卡巴卡，阿卡哇卡，米卡玛卡，呣",
+	links: [
+		{
+			name: "GitHub",
+			icon: "fa6-brands:github",
+			url: "https://github.com/trtyr",
+		},
+		{
+			name: "Discord",
+			icon: "fa6-brands:discord",
+			url: "https://discord.gg/wcPKT6Z7",
+		},
+		{
+			name: "Email",
+			icon: "fa6-solid:envelope",
+			url: "mailto:z169330949@outlook.com",
+		},
+	],
 };
 
 export const licenseConfig: LicenseConfig = {
@@ -291,27 +234,23 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 };
 
 export const commentConfig: CommentConfig = {
-  enable: false, // 启用评论功能。当设置为 false 时，评论组件将不会显示在文章区域。
-  twikoo: {
-    envId: "https://twikoo.vercel.app",
-    lang: "en", // 设置 Twikoo 评论系统语言为英文
-  },
+	enable: true, // 启用评论功能。当设置为 false 时，评论组件将不会显示在文章区域。
+	twikoo: {
+		envId: "http://43.163.80.102:8200/",
+		lang: "zh_CN", // 设置 Twikoo 评论系统语言为英文
+	},
 };
 
 export const announcementConfig: AnnouncementConfig = {
-  title: "Announcement", // 公告标题
-  content: "Welcome to my blog! This is a sample announcement.", // 公告内容
-  closable: true, // 允许用户关闭公告
-  link: {
-    enable: true, // 启用链接
-    text: "Learn More", // 链接文本
-    url: "/about/", // 链接 URL
-    external: false, // 内部链接
-  },
-};
-
-export const musicPlayerConfig: MusicPlayerConfig = {
-  enable: true, // 启用音乐播放器功能
+	title: "公告", // 公告标题
+	content: "Welcome to my blog! ", // 公告内容
+	closable: false, // 允许用户关闭公告
+	link: {
+		enable: true, // 启用链接
+		text: "Learn More", // 链接文本
+		url: "/about/", // 链接 URL
+		external: false, // 内部链接
+	},
 };
 
 export const footerConfig: FooterConfig = {
@@ -435,61 +374,14 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
   },
 };
 
-export const sakuraConfig: SakuraConfig = {
-  enable: false, // 默认关闭樱花特效
-  sakuraNum: 21, // 樱花数量
-  limitTimes: -1, // 樱花越界限制次数，-1为无限循环
-  size: {
-    min: 0.5, // 樱花最小尺寸倍数
-    max: 1.1, // 樱花最大尺寸倍数
-  },
-  speed: {
-    horizontal: {
-      min: -1.7, // 水平移动速度最小值
-      max: -1.2, // 水平移动速度最大值
-    },
-    vertical: {
-      min: 1.5, // 垂直移动速度最小值
-      max: 2.2, // 垂直移动速度最大值
-    },
-    rotation: 0.03, // 旋转速度
-  },
-  zIndex: 100, // 层级，确保樱花在合适的层级显示
-};
 
-// Pio 看板娘配置
-export const pioConfig: import("./types/config").PioConfig = {
-  enable: false, // 启用看板娘
-  models: ["/pio/models/pio/model.json"], // 默认模型路径
-  position: "left", // 默认位置在右侧
-  width: 280, // 默认宽度
-  height: 250, // 默认高度
-  mode: "draggable", // 默认为可拖拽模式
-  hiddenOnMobile: true, // 默认在移动设备上隐藏
-  dialog: {
-    welcome: "Welcome to Mizuki Website!", // 欢迎词
-    touch: [
-      "What are you doing?",
-      "Stop touching me!",
-      "HENTAI!",
-      "Don't bully me like that!",
-    ], // 触摸提示
-    home: "Click here to go back to homepage!", // 首页提示
-    skin: ["Want to see my new outfit?", "The new outfit looks great~"], // 换装提示
-    close: "QWQ See you next time~", // 关闭提示
-    link: "https://github.com/matsuzaka-yuki/Mizuki", // 关于链接
-  },
-};
 
 // 导出所有配置的统一接口
 export const widgetConfigs = {
   profile: profileConfig,
   announcement: announcementConfig,
-  music: musicPlayerConfig,
   layout: sidebarLayoutConfig,
-  sakura: sakuraConfig,
   fullscreenWallpaper: fullscreenWallpaperConfig,
-  pio: pioConfig, // 添加 pio 配置
 } as const;
 
 export const umamiConfig = {

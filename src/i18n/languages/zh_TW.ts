@@ -132,7 +132,8 @@ export const zh_TW: Translation = {
 	[Key.timelineEducation]: "教育",
 	[Key.timelineWork]: "工作",
 	[Key.timelineProject]: "專案",
-	[Key.timelineAchievement]: "成就",
+	[Key.timelineAchievement]: "證書認證",
+	[Key.timelinePersonal]: "成就榮譽",
 	[Key.timelinePresent]: "現在",
 	[Key.timelineLocation]: "地點",
 	[Key.timelineDescription]: "描述",
@@ -151,6 +152,7 @@ export const zh_TW: Translation = {
 	[Key.timelineWorkPositions]: "工作職位",
 	[Key.timelineCurrentRole]: "目前職位",
 	[Key.timelineEmployed]: "在職",
+	[Key.timelineInternship]: "實習",
 	[Key.timelineAvailable]: "可工作",
 
 	// 密碼保護

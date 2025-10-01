@@ -1,6 +1,6 @@
-# 🌸 Mizuki  
-![Node.js >= 20](https://img.shields.io/badge/node.js-%3E%3D20-brightgreen) 
-![pnpm >= 9](https://img.shields.io/badge/pnpm-%3E%3D9-blue) 
+# 🌸 Mizuki
+![Node.js >= 20](https://img.shields.io/badge/node.js-%3E%3D20-brightgreen)
+![pnpm >= 9](https://img.shields.io/badge/pnpm-%3E%3D9-blue)
 ![Astro](https://img.shields.io/badge/Astro-5.12.8-orange)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -32,9 +32,7 @@
 [**中文繁体**](./README.tw.md) /
 
 ## 🆕 v4.9 版本更新
-- **Pio 看板娘整合**：整合了 Pio 看板娘，提供可愛的互動角色，增強使用者互動體驗。
-- **高度可配置**：支援在 `src/config.ts` 中進行詳細配置，包括模型路徑、位置、尺寸、對話內容等，滿足個性化需求。
-- **無刷新跳轉**：看板娘的返回首頁功能現在使用主題自帶的 Swup 無刷新跳轉，提供更流暢、無縫的頁面切換體驗。
+- **無刷新跳轉**：返回首頁功能現在使用主題自帶的 Swup 無刷新跳轉，提供更流暢、無縫的頁面切換體驗。
 
 ## 🆕 v4.3 版本更新
 - **番劇頁面：** 重構了更可愛好看的番劇頁面，包括番劇列表、番劇詳情和番劇時間軸。
@@ -129,7 +127,7 @@
    ```bash
    # 如果沒有安裝 pnpm，先安裝
    npm install -g pnpm
-   
+
    # 安裝專案依賴
    pnpm install
    ```

@@ -32,14 +32,16 @@ const allTimelineItems = getTimelineByType();
 // 类型图标映射
 const getTypeIcon = (type: string) => {
 	switch (type) {
-		case "education":
-			return "material-symbols:school";
 		case "work":
 			return "material-symbols:work";
+		case "certificate":
+			return "material-symbols:verified";
+		case "personal":
+			return "material-symbols:emoji-events";
+		case "learning":
+			return "material-symbols:school";
 		case "project":
 			return "material-symbols:code";
-		case "achievement":
-			return "material-symbols:emoji-events";
 		default:
 			return "material-symbols:event";
 	}
@@ -106,7 +108,7 @@ const subtitle = i18n(I18nKey.timelineSubtitle);
         </div>
         <div class="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-lg p-4">
           <div class="text-2xl font-bold text-orange-600 dark:text-orange-400">
-            {workExperience.years}+
+            {workExperience.display || (workExperience.years + '+')}
           </div>
           <div class="text-sm text-orange-600/70 dark:text-orange-400/70">{i18n(I18nKey.timelineExperience)}</div>
         </div>
@@ -123,9 +125,9 @@ const subtitle = i18n(I18nKey.timelineSubtitle);
               <div class="bg-white dark:bg-gray-800 rounded-lg border border-black/10 dark:border-white/10 p-6 hover:shadow-lg transition-shadow duration-300">
                 <div class="flex items-start gap-4">
                   <div class="w-12 h-12 rounded-lg flex items-center justify-center" style={`background-color: ${item.color || 'rgb(99 102 241)'}20`}>
-                    <Icon 
-                      icon={item.icon || getTypeIcon(item.type)} 
-                      class="text-2xl" 
+                    <Icon
+                      icon={item.icon || getTypeIcon(item.type)}
+                      class="text-2xl"
                       color={item.color || 'rgb(99 102 241)'}
                       fallback={item.title.charAt(0)}
                       loading="eager"
@@ -168,9 +170,9 @@ const subtitle = i18n(I18nKey.timelineSubtitle);
                     {item.links && item.links.length > 0 && (
                       <div class="flex gap-3">
                         {item.links.map((link) => (
-                          <a 
-                            href={link.url} 
-                            target="_blank" 
+                          <a
+                            href={link.url}
+                            target="_blank"
                             rel="noopener noreferrer"
                             class="text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium"
                           >
@@ -195,21 +197,21 @@ const subtitle = i18n(I18nKey.timelineSubtitle);
         <div class="relative">
           <!-- 时间线主轴 -->
           <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700"></div>
-          
+
           <div class="space-y-8">
             {allTimelineItems.map((item, index) => (
               <div class="relative flex items-start gap-6">
                 <!-- 时间线节点 -->
                 <div class="relative z-10 w-12 h-12 rounded-full flex items-center justify-center" style={`background-color: ${item.color || 'rgb(99 102 241)'}`}>
-                  <Icon 
-                    icon={item.icon || getTypeIcon(item.type)} 
-                    class="text-xl text-white" 
+                  <Icon
+                    icon={item.icon || getTypeIcon(item.type)}
+                    class="text-xl text-white"
                     color="white"
                     fallback={item.title.charAt(0)}
                     loading="eager"
                   />
                 </div>
-                
+
                 <!-- 内容卡片 -->
                 <div class="flex-1 bg-white dark:bg-gray-800 rounded-lg border border-black/10 dark:border-white/10 p-6 hover:shadow-lg transition-shadow duration-300">
                   <div class="flex items-start justify-between mb-3">
@@ -224,18 +226,20 @@ const subtitle = i18n(I18nKey.timelineSubtitle);
                       )}
                     </div>
                     <span class={`px-2 py-1 text-xs rounded-full ${
-                      item.type === 'education' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
                       item.type === 'work' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
-                      item.type === 'project' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' :
-                      'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
+                      item.type === 'certificate' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
+                      item.type === 'personal' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' :
+                      item.type === 'learning' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' :
+                      'bg-gray-100 text-gray-700 dark:bg-gray-700/30 dark:text-gray-400'
                     }`}>
-                      {i18n(item.type === 'education' ? I18nKey.timelineEducation :
-                            item.type === 'work' ? I18nKey.timelineWork :
-                            item.type === 'project' ? I18nKey.timelineProject :
-                            I18nKey.timelineAchievement)}
+                      {i18n(item.type === 'work' ? I18nKey.timelineWork :
+                            item.type === 'certificate' ? I18nKey.timelineAchievement :
+                            item.type === 'personal' ? I18nKey.timelinePersonal :
+                            item.type === 'learning' ? I18nKey.timelineEducation :
+                            I18nKey.timelineProject)}
                     </span>
                   </div>
-                  
+
                   <div class="flex items-center gap-4 mb-3 text-sm text-black/60 dark:text-white/60">
                     <div>
                       {formatDate(item.startDate)} - {item.endDate ? formatDate(item.endDate) : i18n(I18nKey.timelinePresent)}
@@ -249,11 +253,11 @@ const subtitle = i18n(I18nKey.timelineSubtitle);
                       </>
                     )}
                   </div>
-                  
+
                   <p class="text-black/70 dark:text-white/70 mb-4">
                     {item.description}
                   </p>
-                  
+
                   {item.achievements && item.achievements.length > 0 && (
                     <div class="mb-4">
                       <h4 class="text-sm font-semibold text-black/80 dark:text-white/80 mb-2">
@@ -269,7 +273,7 @@ const subtitle = i18n(I18nKey.timelineSubtitle);
                       </ul>
                     </div>
                   )}
-                  
+
                   {item.skills && item.skills.length > 0 && (
                     <div class="mb-4">
                       <div class="flex flex-wrap gap-1">
@@ -281,13 +285,13 @@ const subtitle = i18n(I18nKey.timelineSubtitle);
                       </div>
                     </div>
                   )}
-                  
+
                   {item.links && item.links.length > 0 && (
                     <div class="flex gap-4">
                       {item.links.map((link) => (
-                        <a 
-                          href={link.url} 
-                          target="_blank" 
+                        <a
+                          href={link.url}
+                          target="_blank"
                           rel="noopener noreferrer"
                           class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium flex items-center gap-1"
                         >
@@ -323,18 +327,20 @@ const subtitle = i18n(I18nKey.timelineSubtitle);
                 return (
                   <div class="flex items-center gap-3">
                     <div class="w-20 text-sm text-black/70 dark:text-white/70">
-                      {i18n(type === 'education' ? I18nKey.timelineEducation :
-                            type === 'work' ? I18nKey.timelineWork :
-                            type === 'project' ? I18nKey.timelineProject :
-                            I18nKey.timelineAchievement)}
+                      {i18n(type === 'work' ? I18nKey.timelineWork :
+                            type === 'certificate' ? I18nKey.timelineAchievement :
+                            type === 'personal' ? I18nKey.timelinePersonal :
+                            type === 'learning' ? I18nKey.timelineEducation :
+                            I18nKey.timelineProject)}
                     </div>
                     <div class="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div 
+                      <div
                         class={`h-2 rounded-full transition-all duration-500 ${
-                          type === 'education' ? 'bg-blue-500' :
                           type === 'work' ? 'bg-green-500' :
-                          type === 'project' ? 'bg-purple-500' :
-                          'bg-orange-500'
+                          type === 'certificate' ? 'bg-blue-500' :
+                          type === 'personal' ? 'bg-purple-500' :
+                          type === 'learning' ? 'bg-orange-500' :
+                          'bg-gray-500'
                         }`}
                         style={`width: ${percentage}%`}
                       ></div>
@@ -347,7 +353,7 @@ const subtitle = i18n(I18nKey.timelineSubtitle);
               })}
             </div>
           </div>
-          
+
           <!-- 工作经验详情 -->
           <div>
             <h3 class="text-lg font-semibold text-black/80 dark:text-white/80 mb-4">
@@ -362,12 +368,24 @@ const subtitle = i18n(I18nKey.timelineSubtitle);
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-black/70 dark:text-white/70">{i18n(I18nKey.timelineWorkPositions)}</span>
-                <span class="font-semibold text-black/90 dark:text-white/90">{stats.byType.work}</span>
+                <span class="font-semibold text-black/90 dark:text-white/90">
+                  {/* 计算不同的职位数量 */}
+                  {(() => {
+                    const workItems = timelineData.filter(item => item.type === 'work');
+                    const uniquePositions = [...new Set(workItems.map(item => item.position).filter(Boolean))];
+                    return uniquePositions.length;
+                  })()}
+                </span>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-black/70 dark:text-white/70">{i18n(I18nKey.timelineCurrentRole)}</span>
                 <span class="font-semibold text-black/90 dark:text-white/90">
-                  {currentItems.filter(item => item.type === 'work').length > 0 ? i18n(I18nKey.timelineEmployed) : i18n(I18nKey.timelineAvailable)}
+                  {currentItems.filter(item => item.type === 'work').length > 0 ?
+                    (() => {
+                      const currentWork = currentItems.filter(item => item.type === 'work')[0];
+                      return (currentWork.title?.includes('实习') || currentWork.position?.includes('实习')) ? i18n(I18nKey.timelineInternship) : i18n(I18nKey.timelineEmployed);
+                    })()
+                    : i18n(I18nKey.timelineAvailable)}
                 </span>
               </div>
             </div>
@@ -391,8 +409,8 @@ const subtitle = i18n(I18nKey.timelineSubtitle);
   // 确保图标库已加载，并处理页面导航
   document.addEventListener('DOMContentLoaded', () => {
     // 如果图标加载器存在，确保图标已加载
-    if (window.__iconifyLoader) {
-      window.__iconifyLoader.load().then(() => {
+    if ((window as any).__iconifyLoader) {
+      (window as any).__iconifyLoader.load().then(() => {
         // 图标加载完成后，触发时间线项目的重新渲染
         const timelineItems = document.querySelectorAll('.timeline-item');
         timelineItems.forEach(item => {
@@ -406,12 +424,12 @@ const subtitle = i18n(I18nKey.timelineSubtitle);
 
   // 处理页面导航时的图标重新加载
   if (typeof window !== 'undefined') {
-    // 监听页面显示事件（包括前进/后退导航）
+    // 监听页面显示事件（包括前进/后退导航)
     window.addEventListener('pageshow', (event) => {
-      if (event.persisted && window.__iconifyLoader) {
+      if (event.persisted && (window as any).__iconifyLoader) {
         // 页面从缓存恢复，重新检查图标状态
         setTimeout(() => {
-          window.__iconifyLoader.load().catch(console.error);
+          (window as any).__iconifyLoader.load().catch(console.error);
         }, 100);
       }
     });

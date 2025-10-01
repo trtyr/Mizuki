@@ -150,7 +150,8 @@ export const zh_CN: Translation = {
 	[Key.timelineEducation]: "教育经历",
 	[Key.timelineWork]: "工作经历",
 	[Key.timelineProject]: "项目经历",
-	[Key.timelineAchievement]: "成就荣誉",
+	[Key.timelineAchievement]: "证书认证",
+	[Key.timelinePersonal]: "成就荣誉",
 	[Key.timelinePresent]: "至今",
 	[Key.timelineLocation]: "地点",
 	[Key.timelineDescription]: "详细描述",
@@ -169,6 +170,7 @@ export const zh_CN: Translation = {
 	[Key.timelineWorkPositions]: "工作岗位数",
 	[Key.timelineCurrentRole]: "当前状态",
 	[Key.timelineEmployed]: "在职",
+	[Key.timelineInternship]: "实习",
 	[Key.timelineAvailable]: "可入职",
 
 	// 密码保护

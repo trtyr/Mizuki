@@ -155,7 +155,8 @@ export const en: Translation = {
 	[Key.timelineEducation]: "Education",
 	[Key.timelineWork]: "Work",
 	[Key.timelineProject]: "Project",
-	[Key.timelineAchievement]: "Achievement",
+	[Key.timelineAchievement]: "Certificate",
+	[Key.timelinePersonal]: "Achievement",
 	[Key.timelinePresent]: "Present",
 	[Key.timelineLocation]: "Location",
 	[Key.timelineDescription]: "Description",
@@ -174,6 +175,7 @@ export const en: Translation = {
 	[Key.timelineWorkPositions]: "Positions",
 	[Key.timelineCurrentRole]: "Current Status",
 	[Key.timelineEmployed]: "Employed",
+	[Key.timelineInternship]: "Internship",
 	[Key.timelineAvailable]: "Available",
 
 	// Password Protection
