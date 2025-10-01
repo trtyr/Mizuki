@@ -118,12 +118,11 @@ export const siteConfig: SiteConfig = {
       transparentMode: "semifull", // 导航栏透明模式："semi" 半透明加圆角，"full" 完全透明，"semifull" 动态透明
     },
   },
-  toc: {
-    enable: true, // 启用目录功能
-    depth: 3, // 目录深度，1-6，1 表示只显示 h1 标题，2 表示显示 h1 和 h2 标题，依此类推
-  },
-  generateOgImages: false, // 启用生成OpenGraph图片功能,注意开启后要渲染很长时间，不建议本地调试的时候开启
-  favicon: [
+	toc: {
+		enable: true, // 启用目录功能
+		depth: 3, // 目录深度，1-6，1 表示只显示 h1 标题，2 表示显示 h1 和 h2 标题，依此类推
+	},
+	favicon: [
     // 留空以使用默认 favicon
     // {
     //   src: '/favicon/icon.png',    // 图标文件路径
