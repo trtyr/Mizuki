@@ -24,7 +24,7 @@ jobs:
         run: pnpm run build
 
       - name: Install coscmd
-        run: sudo pip install coscmd
+        run: sudo pip install -U coscmd
 
       - name: Configure coscmd
         env:
@@ -32,7 +32,7 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRETKEY }}
           BUCKET: ${{ secrets.BUCKET }}
           REGION: ${{ secrets.REGION }}
-        run: coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION
+        run: coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION -m 30
 
       - name: Upload to COS
         run: coscmd upload -r -f --delete ./dist/ / --ignore "./.git/*"
