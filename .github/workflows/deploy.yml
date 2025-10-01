@@ -5,10 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
@@ -23,71 +23,34 @@ jobs:
       - name: Build Astro project
         run: pnpm run build
 
-      - name: Install coscmd
-        run: sudo pip install coscmd
+      - name: Install COSCLI
+        run: |
+          wget https://github.com/tencentyun/coscli/releases/download/v0.11.0-beta/coscli-linux
+          chmod +x coscli-linux
+          sudo mv coscli-linux /usr/local/bin/coscli
 
-      - name: Configure coscmd
+      - name: Configure COSCLI
         env:
           SECRET_ID: ${{ secrets.SECRETID }}
           SECRET_KEY: ${{ secrets.SECRETKEY }}
           BUCKET: ${{ secrets.BUCKET }}
           REGION: ${{ secrets.REGION }}
         run: |
-          coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION
-          # 配置多线程上传
-          coscmd config --max_thread 30 --part_size 1 --sync_speed 0
+          coscli config add \
+            --bucket-name $BUCKET \
+            --region $REGION \
+            --secret-id $SECRET_ID \
+            --secret-key $SECRET_KEY \
+            --alias mybucket
 
-      - name: Create ignore file
+      - name: Sync to COS (with multi-threading)
         run: |
-          cat > .cosignore << EOF
-          # Git相关文件
-          .git/
-          .gitignore
-          .gitattributes
-
-          # Node.js相关
-          node_modules/
-          npm-debug.log*
-          yarn-debug.log*
-          yarn-error.log*
-
-          # Astro构建相关
-          .astro/
-
-          # IDE和编辑器
-          .vscode/
-          .idea/
-          *.swp
-          *.swo
-          *~
-
-          # OS生成的文件
-          .DS_Store
-          Thumbs.db
-
-          # 日志文件
-          *.log
-
-          # 环境配置文件
-          .env
-          .env.*
-
-          # 锁文件
-          package-lock.json
-          yarn.lock
-          pnpm-lock.yaml
-          EOF
-
-      - name: Sync to COS (Complete synchronization)
-        run: |
-          # 先删除云端所有文件（除了特殊保留文件）
-          coscmd delete -r --force / || true
-          # 然后使用ignore文件同步
-          coscmd sync ./dist/ / --delete --ignore .cosignore
-
-      - name: Verify upload
-        run: |
-          echo "Upload completed! Checking file count..."
-          coscmd list / | wc -l
-          echo "Local file count:"
-          find ./dist -type f | wc -l
+          coscli sync ./dist/ cos://mybucket/ \
+            --include "*" \
+            --exclude ".git/*" \
+            --part-size 10 \
+            --thread-num 30 \
+            --rate-limiting 0 \
+            --delete \
+            --retry-times 5 \
+            --retry-interval 3
