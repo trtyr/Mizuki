@@ -32,7 +32,62 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRETKEY }}
           BUCKET: ${{ secrets.BUCKET }}
           REGION: ${{ secrets.REGION }}
-        run: coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION -m 30
+        run: |
+          coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION
+          # 配置多线程上传
+          coscmd config --max_thread 30 --part_size 1 --sync_speed 0
 
-      - name: Upload to COS
-        run: coscmd upload -r -f --delete ./dist/ / --ignore "./.git/*"
+      - name: Create ignore file
+        run: |
+          cat > .cosignore << EOF
+          # Git相关文件
+          .git/
+          .gitignore
+          .gitattributes
+
+          # Node.js相关
+          node_modules/
+          npm-debug.log*
+          yarn-debug.log*
+          yarn-error.log*
+
+          # Astro构建相关
+          .astro/
+
+          # IDE和编辑器
+          .vscode/
+          .idea/
+          *.swp
+          *.swo
+          *~
+
+          # OS生成的文件
+          .DS_Store
+          Thumbs.db
+
+          # 日志文件
+          *.log
+
+          # 环境配置文件
+          .env
+          .env.*
+
+          # 锁文件
+          package-lock.json
+          yarn.lock
+          pnpm-lock.yaml
+          EOF
+
+      - name: Sync to COS (Complete synchronization)
+        run: |
+          # 先删除云端所有文件（除了特殊保留文件）
+          coscmd delete -r --force / || true
+          # 然后使用ignore文件同步
+          coscmd sync ./dist/ / --delete --ignore .cosignore
+
+      - name: Verify upload
+        run: |
+          echo "Upload completed! Checking file count..."
+          coscmd list / | wc -l
+          echo "Local file count:"
+          find ./dist -type f | wc -l
