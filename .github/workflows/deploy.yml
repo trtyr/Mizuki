@@ -1,4 +1,4 @@
-name: Upload to COS
+name: Upload to COS (AWS CLI)
 on: [push]
 jobs:
   build:
@@ -23,49 +23,29 @@ jobs:
       - name: Build Astro project
         run: pnpm run build
 
-      - name: Install COSCLI
+      - name: Install AWS CLI
         run: |
-          wget https://github.com/tencentyun/coscli/releases/download/v0.11.0-beta/coscli-linux
-          chmod +x coscli-linux
-          sudo mv coscli-linux /usr/local/bin/coscli
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
 
-      - name: Configure COSCLI
+      - name: Configure AWS CLI for COS
         env:
           SECRET_ID: ${{ secrets.SECRETID }}
           SECRET_KEY: ${{ secrets.SECRETKEY }}
           BUCKET: ${{ secrets.BUCKET }}
           REGION: ${{ secrets.REGION }}
         run: |
-          coscli config add \
-            -a mybucket \
-            -b $BUCKET \
-            -r $REGION \
-            -i $SECRET_ID \
-            -k $SECRET_KEY
+          aws configure set aws_access_key_id $SECRET_ID
+          aws configure set aws_secret_access_key $SECRET_KEY
+          aws configure set default.region $REGION
+          aws configure set default.s3.endpoint_url "https://cos.$REGION.myqcloud.com"
 
-      - name: Sync to COS (with multi-threading)
+      - name: Sync to COS using AWS CLI (with full sync)
+        env:
+          BUCKET: ${{ secrets.BUCKET }}
         run: |
-          coscli sync ./dist/ cos://mybucket/ \
-            --include "*" \
+          aws s3 sync ./dist/ s3://$BUCKET/ \
+            --delete \
             --exclude ".git/*" \
-            --part-size 10 \
-            --thread-num 30 \
-            --rate-limiting 0 \
-            --recursive
-
-      - name: Clean up old files (delete remote files not in local)
-        run: |
-          # List remote files and delete those not in local dist
-          coscli ls cos://mybucket/ --recursive > remote_files.txt
-          find ./dist -type f | sed "s|./dist/||" > local_files.txt
-
-          # Find files that exist remotely but not locally
-          comm -23 remote_files.txt local_files.txt > files_to_delete.txt
-
-          # Delete those files
-          while IFS= read -r file; do
-            if [ -n "$file" ]; then
-              echo "Deleting remote file: $file"
-              coscli rm cos://mybucket/"$file"
-            fi
-          done < files_to_delete.txt
+            --quiet
