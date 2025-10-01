@@ -1,11 +1,8 @@
 name: Upload to COS
-
 on: [push]
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -15,19 +12,24 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Build Astro project
-        run: npm run build
+        run: pnpm run build
 
       - name: Install coscmd
         run: sudo pip install coscmd
 
       - name: Configure coscmd
         env:
-          SECRET_ID: ${{ secrets.SecretId }}
-          SECRET_KEY: ${{ secrets.SecretKey }}
+          SECRET_ID: ${{ secrets.SECRETID }}
+          SECRET_KEY: ${{ secrets.SECRETKEY }}
           BUCKET: ${{ secrets.BUCKET }}
           REGION: ${{ secrets.REGION }}
         run: coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION
