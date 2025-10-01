@@ -1,56 +1,36 @@
-name: Upload to COS (AWS CLI with Threading)
+name: Upload to COS
+
 on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v2
         with:
           node-version: '20'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
       - name: Install dependencies
-        run: pnpm install
+        run: npm install
 
       - name: Build Astro project
-        run: pnpm run build
+        run: npm run build
 
-      - name: Configure AWS CLI for COS
+      - name: Install coscmd
+        run: sudo pip install coscmd
+
+      - name: Configure coscmd
         env:
-          SECRET_ID: ${{ secrets.SECRETID }}
-          SECRET_KEY: ${{ secrets.SECRETKEY }}
+          SECRET_ID: ${{ secrets.SecretId }}
+          SECRET_KEY: ${{ secrets.SecretKey }}
           BUCKET: ${{ secrets.BUCKET }}
           REGION: ${{ secrets.REGION }}
-        run: |
-          aws configure set aws_access_key_id $SECRET_ID
-          aws configure set aws_secret_access_key $SECRET_KEY
-          aws configure set default.region $REGION
-          aws configure set default.s3.endpoint_url "https://cos.$REGION.myqcloud.com"
-          aws configure set default.s3.max_concurrent_requests 30
-          aws configure set default.s3.max_queue_size 10000
+        run: coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION
 
-      - name: Sync to COS using AWS CLI (with full sync and threading)
-        env:
-          BUCKET: ${{ secrets.BUCKET }}
-        run: |
-          aws s3 sync ./dist/ s3://$BUCKET/ \
-            --delete \
-            --exclude ".git/*" \
-            --quiet \
-            --follow-symlinks
-
-      - name: Verify deployment
-        env:
-          BUCKET: ${{ secrets.BUCKET }}
-        run: |
-          echo "Deployment completed successfully!"
-          echo "Files in bucket:"
-          aws s3 ls s3://$BUCKET/ --recursive --human-readable --summarize
+      - name: Upload to COS
+        run: coscmd upload -r -f --delete ./dist/ / --ignore "./.git/*"
