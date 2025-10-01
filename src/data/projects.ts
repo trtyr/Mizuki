@@ -91,7 +91,12 @@ export const projectsData: Project[] = [
 	{
 		id: "mcp-gateway",
 		title: "MCP Gateway",
+<<<<<<< HEAD
 		description: "基于Python的MCP网关，提供模型上下文协议的网关服务。",
+=======
+		description:
+			"基于Python的MCP网关，提供模型上下文协议的网关服务。",
+>>>>>>> 2c72a064de6612b6da782796558da06bea42a358
 		image: "",
 		category: "other",
 		techStack: ["Python"],
@@ -117,13 +122,19 @@ export const projectsData: Project[] = [
 	{
 		id: "google-search-subdomain-extractor",
 		title: "Google Search Subdomain Extractor",
+<<<<<<< HEAD
 		description: "被动爬取通过Google Search得到的子域名",
+=======
+		description:
+			"被动爬取通过Google Search得到的子域名",
+>>>>>>> 2c72a064de6612b6da782796558da06bea42a358
 		image: "",
 		category: "other",
 		techStack: ["JavaScript"],
 		status: "completed",
 		sourceCode: "https://github.com/trtyr/Google_Search_Subdomain_Extractor",
 		startDate: "2025-04-06",
+<<<<<<< HEAD
 		tags: [
 			"Subdomain",
 			"Google Search",
@@ -131,11 +142,19 @@ export const projectsData: Project[] = [
 			"Security",
 			"Open Source",
 		],
+=======
+		tags: ["Subdomain", "Google Search", "JavaScript", "Security", "Open Source"],
+>>>>>>> 2c72a064de6612b6da782796558da06bea42a358
 	},
 	{
 		id: "telegram-autocheckin",
 		title: "Telegram AutoCheckIn",
+<<<<<<< HEAD
 		description: "Telegram简易自动签到",
+=======
+		description:
+			"Telegram简易自动签到",
+>>>>>>> 2c72a064de6612b6da782796558da06bea42a358
 		image: "",
 		category: "other",
 		techStack: ["Python"],
@@ -143,6 +162,7 @@ export const projectsData: Project[] = [
 		sourceCode: "https://github.com/trtyr/Telegram_AutoCheckIn",
 		startDate: "2024-12-01",
 		tags: ["Telegram", "Automation", "Python", "Open Source"],
+<<<<<<< HEAD
 	},
 	{
 		id: "umami-automation-deploy",
@@ -169,6 +189,8 @@ export const projectsData: Project[] = [
 		sourceCode: "https://discord.gg/wcPKT6Z7",
 		startDate: "2025-10-01",
 		tags: ["Twikoo", "Automation", "Deployment", "Comment System", "Open Source"],
+=======
+>>>>>>> 2c72a064de6612b6da782796558da06bea42a358
 	},
 ];
 
