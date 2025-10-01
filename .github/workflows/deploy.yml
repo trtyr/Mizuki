@@ -37,11 +37,11 @@ jobs:
           REGION: ${{ secrets.REGION }}
         run: |
           coscli config add \
-            --bucket-name $BUCKET \
-            --region $REGION \
-            --secret-id $SECRET_ID \
-            --secret-key $SECRET_KEY \
-            --alias mybucket
+            -a mybucket \
+            -b $BUCKET \
+            -r $REGION \
+            -i $SECRET_ID \
+            -k $SECRET_KEY
 
       - name: Sync to COS (with multi-threading)
         run: |
