@@ -43,7 +43,8 @@ export const timelineData: TimelineItem[] = [
 	{
 		id: "beijing-threat-intelligence-internship",
 		title: "北京某威胁情报安全厂商实习",
-		description: "在北京威胁情报安全厂商实习，参与安全巡检、渗透测试、驻场支持和攻防演练等工作",
+		description:
+			"在北京威胁情报安全厂商实习，参与安全巡检、渗透测试、驻场支持和攻防演练等工作",
 		type: "work",
 		startDate: "2025-03-10",
 		endDate: "2025-06-01",
@@ -54,7 +55,7 @@ export const timelineData: TimelineItem[] = [
 			"完成14次安全巡检任务",
 			"执行13天渗透测试，发现多处漏洞",
 			"参与新奥能源、国家电网攻防演练",
-			"成功处置XRed、银狐等恶意木马"
+			"成功处置XRed、银狐等恶意木马",
 		],
 		icon: "material-symbols:work",
 		color: "#DC2626",
@@ -81,7 +82,7 @@ export const timelineData: TimelineItem[] = [
 	},
 	{
 		id: "computer-level-3-certificate",
-		title: "全国计算机等级考试三级",
+		title: "全国计算机等级考试",
 		description: "通过全国计算机等级考试三级-信息安全技术考试",
 		type: "certificate",
 		startDate: "2023-03",
@@ -99,7 +100,7 @@ export const timelineData: TimelineItem[] = [
 	},
 	{
 		id: "vocational-skill-certificate",
-		title: "职业技能等级证书-高级",
+		title: "全国职业技能等级证书",
 		description: "获得网络与信息安全管理员高级职业技能等级证书",
 		type: "certificate",
 		startDate: "2024-12-04",
@@ -126,26 +127,20 @@ export const timelineData: TimelineItem[] = [
 		endDate: "2024-10-25", // 比赛是特定日期
 		location: "辽宁",
 		organization: "辽宁省人力资源和社会保障厅",
-		achievements: [
-			"网络安全赛项银牌",
-			"提升实战技能水平"
-		],
+		achievements: ["网络安全赛项银牌", "提升实战技能水平"],
 		icon: "material-symbols:emoji-events",
 		color: "#7C3AED",
 		featured: true,
 	},
 	{
 		id: "datasea-challenge",
-		title: "\"中软国际--卓越杯\"大数据挑战赛",
+		title: '"中软国际--卓越杯"大数据挑战赛',
 		description: "参加大数据挑战赛，获得二等奖",
 		type: "personal",
 		startDate: "2022-10-08",
 		endDate: "2022-10-08", // 比赛是特定日期
 		organization: "中软国际",
-		achievements: [
-			"大数据挑战赛二等奖",
-			"锻炼数据分析能力"
-		],
+		achievements: ["大数据挑战赛二等奖", "锻炼数据分析能力"],
 		icon: "material-symbols:emoji-events",
 		color: "#7C3AED",
 	},
@@ -156,10 +151,7 @@ export const timelineData: TimelineItem[] = [
 		type: "personal",
 		startDate: "2024-09",
 		endDate: "2024-09", // 护网行动是特定月份
-		achievements: [
-			"优秀攻击队员",
-			"实战攻防经验"
-		],
+		achievements: ["优秀攻击队员", "实战攻防经验"],
 		icon: "material-symbols:security",
 		color: "#EA580C",
 	},
@@ -176,10 +168,7 @@ export const timelineData: TimelineItem[] = [
 		organization: "辽宁工程技术大学",
 		position: "网络工程专业",
 		skills: ["网络工程", "计算机基础"],
-		achievements: [
-			"获得科技奖学金",
-			"系统学习专业知识"
-		],
+		achievements: ["获得科技奖学金", "系统学习专业知识"],
 		icon: "material-symbols:school",
 		color: "#2563EB",
 		featured: true,
@@ -192,10 +181,7 @@ export const timelineData: TimelineItem[] = [
 		startDate: "2023-10",
 		endDate: "2023-10", // 学习完成是特定月份
 		skills: ["HTML", "CSS", "JavaScript", "Web开发"],
-		achievements: [
-			"完成第一个网站项目",
-			"掌握Web开发基础"
-		],
+		achievements: ["完成第一个网站项目", "掌握Web开发基础"],
 		icon: "material-symbols:code",
 		color: "#7C3AED",
 	},
@@ -207,10 +193,7 @@ export const timelineData: TimelineItem[] = [
 		startDate: "2024-07",
 		endDate: "2024-07", // 学习开始是特定月份
 		skills: ["网络安全", "渗透测试", "漏洞挖掘"],
-		achievements: [
-			"建立网络安全知识体系",
-			"开始实战练习"
-		],
+		achievements: ["建立网络安全知识体系", "开始实战练习"],
 		icon: "material-symbols:security",
 		color: "#EA580C",
 	},
@@ -222,25 +205,20 @@ export const timelineData: TimelineItem[] = [
 		startDate: "2025-03",
 		endDate: "2025-03", // 学习开始是特定月份
 		skills: ["人工智能", "机器学习"],
-		achievements: [
-			"建立AI基础知识",
-			"了解AI应用场景"
-		],
+		achievements: ["建立AI基础知识", "了解AI应用场景"],
 		icon: "material-symbols:psychology",
 		color: "#7C3AED",
 	},
 	{
 		id: "first-ai-jailbreak",
 		title: "第一次对AI产品jailbreak",
-		description: "成功对多个AI模型进行越狱测试，包括Claude 3.5/3.7、微步XGTP、DeepSeek、ChatGPT等",
+		description:
+			"成功对多个AI模型进行越狱测试，包括Claude 3.5/3.7、微步XGTP、DeepSeek、ChatGPT等",
 		type: "learning",
 		startDate: "2025-03-17",
 		endDate: "2025-03-17", // 特定日期的成就
 		skills: ["AI安全", "提示词工程", "越狱技术"],
-		achievements: [
-			"掌握AI越狱技术",
-			"成功实践多个AI模型"
-		],
+		achievements: ["掌握AI越狱技术", "成功实践多个AI模型"],
 		icon: "material-symbols:psychology",
 		color: "#7C3AED",
 	},
@@ -251,7 +229,8 @@ export const getTimelineStats = () => {
 	const total = timelineData.length;
 	const byType = {
 		work: timelineData.filter((item) => item.type === "work").length,
-		certificate: timelineData.filter((item) => item.type === "certificate").length,
+		certificate: timelineData.filter((item) => item.type === "certificate")
+			.length,
 		personal: timelineData.filter((item) => item.type === "personal").length,
 		learning: timelineData.filter((item) => item.type === "learning").length,
 		project: timelineData.filter((item) => item.type === "project").length, // 添加项目类型统计
@@ -317,13 +296,12 @@ export const getTotalWorkExperience = () => {
 		return {
 			years: 0,
 			months: months,
-			display: `${months}个月`
-		};
-	} else {
-		return {
-			years: years,
-			months: months,
-			display: `${years}年${months > 0 ? months + '个月' : ''}`
+			display: `${months}个月`,
 		};
 	}
+	return {
+		years: years,
+		months: months,
+		display: `${years}年${months > 0 ? `${months}个月` : ""}`,
+	};
 };

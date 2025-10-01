@@ -40,7 +40,6 @@ enum I18nKey {
 	author = "author",
 	publishedAt = "publishedAt",
 	license = "license",
-	friends = "friends",
 	diary = "diary",
 
 	// 短文页面
@@ -79,6 +78,7 @@ enum I18nKey {
 	projectsMobile = "projectsMobile",
 	projectsDesktop = "projectsDesktop",
 	projectsOther = "projectsOther",
+	projectsAutomation = "projectsAutomation",
 	projectTechStack = "projectTechStack",
 	projectLiveDemo = "projectLiveDemo",
 	projectSourceCode = "projectSourceCode",

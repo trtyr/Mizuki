@@ -20,7 +20,6 @@ export const zh_CN: Translation = {
 	[Key.announcementClose]: "关闭",
 
 	[Key.comments]: "评论",
-	[Key.friends]: "友链",
 	[Key.untitled]: "无标题",
 	[Key.uncategorized]: "未分类",
 	[Key.noTags]: "无标签",
@@ -81,6 +80,7 @@ export const zh_CN: Translation = {
 	[Key.projectsMobile]: "移动应用",
 	[Key.projectsDesktop]: "桌面应用",
 	[Key.projectsOther]: "其他",
+	[Key.projectsAutomation]: "自动化",
 	[Key.projectTechStack]: "技术栈",
 	[Key.projectLiveDemo]: "在线演示",
 	[Key.projectSourceCode]: "源代码",

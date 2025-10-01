@@ -47,6 +47,8 @@ const getCategoryText = (category: string) => {
 			return i18n(I18nKey.projectsDesktop);
 		case "other":
 			return i18n(I18nKey.projectsOther);
+		case "automation":
+			return i18n(I18nKey.projectsAutomation);
 		case UNCATEGORIZED:
 			return i18n(I18nKey.uncategorized);
 		default:
@@ -99,8 +101,8 @@ const getCategoryText = (category: string) => {
               <div class="bg-white dark:bg-gray-800 rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 {project.image && (
                   <div class="aspect-video overflow-hidden">
-                    <img 
-                      src={project.image} 
+                    <img
+                      src={project.image}
                       alt={project.title}
                       class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
@@ -112,14 +114,14 @@ const getCategoryText = (category: string) => {
                       {project.title}
                     </h3>
                     <span class={`px-2 py-1 text-xs rounded-full ${
-                      project.status === 'completed' 
+                      project.status === 'completed'
                         ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                         : project.status === 'in-progress'
                         ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
                         : 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
                     }`}>
-                      {i18n(project.status === 'completed' ? I18nKey.projectsCompleted : 
-                            project.status === 'in-progress' ? I18nKey.projectsInProgress : 
+                      {i18n(project.status === 'completed' ? I18nKey.projectsCompleted :
+                            project.status === 'in-progress' ? I18nKey.projectsInProgress :
                             I18nKey.projectsPlanned)}
                     </span>
                   </div>
@@ -140,9 +142,9 @@ const getCategoryText = (category: string) => {
                   </div>
                   <div class="flex gap-3">
                     {project.demoUrl && (
-                      <a 
-                        href={project.demoUrl} 
-                        target="_blank" 
+                      <a
+                        href={project.demoUrl}
+                        target="_blank"
                         rel="noopener noreferrer"
                         class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium"
                       >
@@ -150,9 +152,9 @@ const getCategoryText = (category: string) => {
                       </a>
                     )}
                     {project.sourceUrl && (
-                      <a 
-                        href={project.sourceUrl} 
-                        target="_blank" 
+                      <a
+                        href={project.sourceUrl}
+                        target="_blank"
                         rel="noopener noreferrer"
                         class="text-gray-600 dark:text-gray-400 hover:underline text-sm font-medium"
                       >
@@ -172,7 +174,7 @@ const getCategoryText = (category: string) => {
         {categories.map((category) => {
           const categoryProjects = projectsByCategory[category];
           if (categoryProjects.length === 0) return null;
-          
+
           return (
             <div>
               <h2 class="text-2xl font-bold text-black/90 dark:text-white/90 mb-4">
@@ -186,8 +188,8 @@ const getCategoryText = (category: string) => {
                   <div class="bg-white dark:bg-gray-800 rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-lg transition-shadow duration-300">
                     {project.image && (
                       <div class="aspect-video overflow-hidden">
-                        <img 
-                          src={project.image} 
+                        <img
+                          src={project.image}
                           alt={project.title}
                           class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                         />
@@ -199,14 +201,14 @@ const getCategoryText = (category: string) => {
                           {project.title}
                         </h3>
                         <span class={`px-2 py-1 text-xs rounded-full shrink-0 ml-2 ${
-                          project.status === 'completed' 
+                          project.status === 'completed'
                             ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                             : project.status === 'in-progress'
                             ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
                             : 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
                         }`}>
-                          {i18n(project.status === 'completed' ? I18nKey.projectsCompleted : 
-                                project.status === 'in-progress' ? I18nKey.projectsInProgress : 
+                          {i18n(project.status === 'completed' ? I18nKey.projectsCompleted :
+                                project.status === 'in-progress' ? I18nKey.projectsInProgress :
                                 I18nKey.projectsPlanned)}
                         </span>
                       </div>
@@ -227,9 +229,9 @@ const getCategoryText = (category: string) => {
                       </div>
                       <div class="flex gap-3 text-sm">
                         {project.demoUrl && (
-                          <a 
-                            href={project.demoUrl} 
-                            target="_blank" 
+                          <a
+                            href={project.demoUrl}
+                            target="_blank"
                             rel="noopener noreferrer"
                             class="text-blue-600 dark:text-blue-400 hover:underline font-medium"
                           >
@@ -237,9 +239,9 @@ const getCategoryText = (category: string) => {
                           </a>
                         )}
                         {project.sourceUrl && (
-                          <a 
-                            href={project.sourceUrl} 
-                            target="_blank" 
+                          <a
+                            href={project.sourceUrl}
+                            target="_blank"
                             rel="noopener noreferrer"
                             class="text-gray-600 dark:text-gray-400 hover:underline font-medium"
                           >
@@ -280,7 +282,7 @@ const getCategoryText = (category: string) => {
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  
+
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
