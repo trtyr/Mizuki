@@ -1,6 +1,6 @@
-# 🌸 Mizuki  
-![Node.js >= 20](https://img.shields.io/badge/node.js-%3E%3D20-brightgreen) 
-![pnpm >= 9](https://img.shields.io/badge/pnpm-%3E%3D9-blue) 
+# 🌸 Mizuki
+![Node.js >= 20](https://img.shields.io/badge/node.js-%3E%3D20-brightgreen)
+![pnpm >= 9](https://img.shields.io/badge/pnpm-%3E%3D9-blue)
 ![Astro](https://img.shields.io/badge/Astro-5.12.8-orange)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -40,7 +40,6 @@
 - **番剧页面：** 重构了更可爱好看的番剧页面，包括番剧列表、番剧详情和番剧时间轴。
 - **相册页面：** 重构了相册页面,使用分页+文件夹数据索引方案
 - **全新的动画：** 使用了全新的动画组件，使页面更加流畅和美观
-- **图片API的支持** 支持图片API，可以快速获取图片信息,使用(PicFlow API项目)[https://github.com/matsuzaka-yuki/PicFlow-API]
 
 ## 🆕 v3.4 版本更新
 - **新增页面：** 添加了项目展示、技能展示和时间线专属页面，用于展示您的工作、专业技能和成长历程。
@@ -132,7 +131,7 @@
    ```bash
    # 如果没有安装 pnpm，先安装
    npm install -g pnpm
-   
+
    # 安装项目依赖
    pnpm install
    ```
