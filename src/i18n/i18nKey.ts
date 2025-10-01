@@ -40,7 +40,6 @@ enum I18nKey {
 	author = "author",
 	publishedAt = "publishedAt",
 	license = "license",
-	friends = "friends",
 	diary = "diary",
 
 	// 短文页面

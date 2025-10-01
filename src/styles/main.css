@@ -370,3 +370,34 @@ html {
 :root:not(.dark) .custom-md spoiler {
   --_spoiler-mask: color-mix(in oklch, var(--primary) 55%, white 45%);
 }
+
+/* 图片悬浮预览样式 */
+.image-hover-preview {
+  @apply relative inline-block cursor-pointer text-[var(--primary)] hover:underline transition-colors duration-150;
+}
+
+/* 图片悬浮预览容器样式 */
+.image-hover-preview-container {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  background: var(--float-panel-bg);
+  border: 1px solid var(--line-color);
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.image-hover-preview-container img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 4px;
+}

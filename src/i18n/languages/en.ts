@@ -43,7 +43,6 @@ export const en: Translation = {
 	[Key.author]: "Author",
 	[Key.publishedAt]: "Published at",
 	[Key.license]: "License",
-	[Key.friends]: "Friends",
 	[Key.diary]: "Moments",
 
 	// 短文页面
