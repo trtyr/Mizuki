@@ -32,7 +32,7 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRETKEY }}
           BUCKET: ${{ secrets.BUCKET }}
           REGION: ${{ secrets.REGION }}
-        run: coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION
+        run: coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION -m 30 -v --slice-size 5M
 
       - name: Upload to COS
-        run: coscmd upload -r -f --delete ./dist/ / --ignore "./.git/*" -m 30 --force -v --slice-size 5M
+        run: coscmd upload -r -f --delete ./dist/ / --ignore "./.git/*" --force
