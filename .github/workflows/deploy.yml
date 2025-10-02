@@ -32,19 +32,7 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRETKEY }}
           BUCKET: ${{ secrets.BUCKET }}
           REGION: ${{ secrets.REGION }}
-        run: |
-          coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION -m 30
+        run: coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION -m 30
 
       - name: Upload to COS
-        env:
-          BUCKET: ${{ secrets.BUCKET }}
-        run: |
-          coscmd -v upload \
-            -r                # 递归上传目录
-            -f                # 强制覆盖同名对象
-            --delete          # 远端多余文件同步删除
-            --ignore "./.git/*" \
-            --force           # 非交互式确认
-            --slice-size 5M   # 分块大小 5 MiB
-            ./dist/           # 本地目录
-            cos://$BUCKET/    # 目标 COS 路径
+        run: coscmd -v upload -r -f --force --delete ./dist/ / --ignore "./.git/*"
