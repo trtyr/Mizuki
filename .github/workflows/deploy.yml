@@ -24,34 +24,15 @@ jobs:
         run: pnpm run build
 
       - name: Install coscmd
-        run: sudo pip install coscmd
+        run: sudo pip install -U coscmd
 
-      - name: Configure coscmd with optimized settings
+      - name: Configure coscmd
         env:
           SECRET_ID: ${{ secrets.SECRETID }}
           SECRET_KEY: ${{ secrets.SECRETKEY }}
           BUCKET: ${{ secrets.BUCKET }}
           REGION: ${{ secrets.REGION }}
-        run: |
-          coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION -m 20 -p 10
+        run: coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION -m 30
 
-      - name: Upload to COS with retry
-        run: |
-          # 设置重试机制
-          max_retries=3
-          retry_count=0
-          until [ $retry_count -ge $max_retries ]
-          do
-            echo "尝试上传到COS (第 $((retry_count+1)) 次)"
-            coscmd upload -r -f --delete ./dist/ / --ignore "./.git/*" && break
-            retry_count=$((retry_count+1))
-            echo "上传失败，等待10秒后重试..."
-            sleep 10
-          done
-
-          if [ $retry_count -eq $max_retries ]; then
-            echo "上传失败，已达到最大重试次数"
-            exit 1
-          fi
-
-          echo "上传成功完成"
+      - name: Upload to COS
+        run: coscmd upload -r -f --delete ./dist/ / --ignore "./.git/*"
