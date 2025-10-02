@@ -1,15 +1,14 @@
-name: Upload to COS
+name: Upload to COS using Python SDK
 on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30 # 增加超时时间到30分钟
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: "20"
 
@@ -24,24 +23,218 @@ jobs:
       - name: Build Astro project
         run: pnpm run build
 
-      - name: Install coscmd
-        run: sudo pip install coscmd
+      - name: Install Tencent COS SDK
+        run: sudo pip3 install cos-python-sdk-v5
 
-      - name: Configure coscmd
+      - name: Upload to COS using Python SDK
         env:
           SECRET_ID: ${{ secrets.SECRETID }}
           SECRET_KEY: ${{ secrets.SECRETKEY }}
           BUCKET: ${{ secrets.BUCKET }}
           REGION: ${{ secrets.REGION }}
-        run: coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION
-
-      - name: Upload to COS with retry
         run: |
-          coscmd upload -r -f --delete --sync-timeout 300 ./dist/ / --ignore "./.git/*" || {
-            echo "First upload attempt failed, retrying..."
-            sleep 10
-            coscmd upload -r -f --delete --sync-timeout 300 ./dist/ / --ignore "./.git/*"
-          }
+          python3 << 'EOF'
+          import os
+          import sys
+          import logging
+          from qcloud_cos import CosConfig
+          from qcloud_cos import CosS3Client
+          from qcloud_cos import CosServiceError
+          from qcloud_cos import CosClientError
+          import time
 
-      - name: Verify upload
-        run: coscmd list /
+          # 配置日志
+          logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+          logger = logging.getLogger(__name__)
+
+          # 配置COS客户端
+          try:
+              config = CosConfig(
+                  Region=os.environ['REGION'],
+                  SecretId=os.environ['SECRET_ID'],
+                  SecretKey=os.environ['SECRET_KEY']
+              )
+              client = CosS3Client(config)
+              bucket = os.environ['BUCKET']
+              logger.info(f"COS客户端初始化成功，存储桶: {bucket}")
+          except Exception as e:
+              logger.error(f"COS客户端初始化失败: {e}")
+              sys.exit(1)
+
+          # 统计函数
+          def upload_stats():
+              total_files = 0
+              success_files = 0
+              failed_files = 0
+              skipped_files = 0
+              return {
+                  'total': total_files,
+                  'success': success_files,
+                  'failed': failed_files,
+                  'skipped': skipped_files
+              }
+
+          stats = upload_stats()
+
+          # 检查文件是否需要上传
+          def should_upload_file(local_path, cos_key):
+              try:
+                  # 检查COS中是否已存在该文件
+                  response = client.head_object(
+                      Bucket=bucket,
+                      Key=cos_key
+                  )
+                  # 如果文件存在，检查本地文件大小
+                  local_size = os.path.getsize(local_path)
+                  cos_size = response['ContentLength']
+                  return local_size != cos_size
+              except CosServiceError as e:
+                  # 如果文件不存在（404错误），则需要上传
+                  if e.get_status_code() == 404:
+                      return True
+                  logger.error(f"检查文件 {cos_key} 时出错: {e}")
+                  return False
+              except Exception as e:
+                  logger.error(f"检查文件 {cos_key} 时发生异常: {e}")
+                  return True  # 出错时选择上传
+
+          # 上传单个文件
+          def upload_file(local_path, cos_key, max_retries=3):
+              stats['total'] += 1
+
+              # 检查是否需要上传
+              if not should_upload_file(local_path, cos_key):
+                  logger.info(f"跳过未修改的文件: {cos_key}")
+                  stats['skipped'] += 1
+                  return True
+
+              for attempt in range(max_retries):
+                  try:
+                      logger.info(f"上传文件: {local_path} -> {cos_key} (尝试 {attempt + 1}/{max_retries})")
+
+                      # 使用upload_file方法，支持自动分片上传
+                      response = client.upload_file(
+                          Bucket=bucket,
+                          LocalFilePath=local_path,
+                          Key=cos_key
+                      )
+
+                      logger.info(f"上传成功: {cos_key}")
+                      stats['success'] += 1
+                      return True
+
+                  except CosServiceError as e:
+                      logger.error(f"上传失败 (CosServiceError): {cos_key} - {e}")
+                      if attempt == max_retries - 1:
+                          stats['failed'] += 1
+                          return False
+                      time.sleep(2 ** attempt)  # 指数退避
+
+                  except CosClientError as e:
+                      logger.error(f"上传失败 (CosClientError): {cos_key} - {e}")
+                      if attempt == max_retries - 1:
+                          stats['failed'] += 1
+                          return False
+                      time.sleep(2 ** attempt)
+
+                  except Exception as e:
+                      logger.error(f"上传失败 (Exception): {cos_key} - {e}")
+                      if attempt == max_retries - 1:
+                          stats['failed'] += 1
+                          return False
+                      time.sleep(2 ** attempt)
+
+              return False
+
+          # 批量上传目录
+          def upload_directory(local_dir, cos_dir):
+              logger.info(f"开始上传目录: {local_dir} -> {cos_dir}")
+
+              # 遍历本地目录
+              for root, dirs, files in os.walk(local_dir):
+                  for file in files:
+                      local_path = os.path.join(root, file)
+                      # 计算相对路径
+                      relative_path = os.path.relpath(local_path, local_dir)
+                      # 构造COS路径
+                      cos_path = os.path.join(cos_dir, relative_path).replace('\\', '/')
+
+                      # 上传文件
+                      upload_file(local_path, cos_path)
+
+                      # 每上传10个文件输出一次统计信息
+                      if stats['total'] % 10 == 0:
+                          logger.info(f"上传进度: 总计 {stats['total']} 文件，成功 {stats['success']}，失败 {stats['failed']}，跳过 {stats['skipped']}")
+
+          # 删除COS中存在但本地不存在的文件
+          def cleanup_cos_files(local_dir, cos_dir):
+              logger.info("开始清理COS中的多余文件...")
+
+              try:
+                  # 获取COS中的文件列表
+                  paginator = client.get_paginator('list_objects_v2')
+                  page_iterator = paginator.paginate(
+                      Bucket=bucket,
+                      Prefix=cos_dir
+                  )
+
+                  # 构建本地文件集合
+                  local_files = set()
+                  for root, dirs, files in os.walk(local_dir):
+                      for file in files:
+                          local_path = os.path.join(root, file)
+                          relative_path = os.path.relpath(local_path, local_dir)
+                          cos_path = os.path.join(cos_dir, relative_path).replace('\\', '/')
+                          local_files.add(cos_path)
+
+                  # 删除多余的COS文件
+                  deleted_count = 0
+                  for page in page_iterator:
+                      if 'Contents' in page:
+                          for obj in page['Contents']:
+                              cos_key = obj['Key']
+                              if cos_key not in local_files and cos_key != cos_dir:
+                                  try:
+                                      client.delete_object(
+                                          Bucket=bucket,
+                                          Key=cos_key
+                                      )
+                                      logger.info(f"删除多余文件: {cos_key}")
+                                      deleted_count += 1
+                                  except Exception as e:
+                                      logger.error(f"删除文件失败: {cos_key} - {e}")
+
+                  logger.info(f"清理完成，删除了 {deleted_count} 个多余文件")
+
+              except Exception as e:
+                  logger.error(f"清理文件时出错: {e}")
+
+          # 主执行流程
+          try:
+              logger.info("开始部署到腾讯云COS...")
+
+              # 上传文件
+              upload_directory('./dist', '/')
+
+              # 清理多余文件
+              cleanup_cos_files('./dist', '/')
+
+              # 输出最终统计信息
+              logger.info("=" * 50)
+              logger.info("部署完成！")
+              logger.info(f"总计文件: {stats['total']}")
+              logger.info(f"成功上传: {stats['success']}")
+              logger.info(f"上传失败: {stats['failed']}")
+              logger.info(f"跳过文件: {stats['skipped']}")
+              logger.info("=" * 50)
+
+              if stats['failed'] > 0:
+                  logger.warning(f"有 {stats['failed']} 个文件上传失败，请检查日志")
+                  sys.exit(1)
+              else:
+                  logger.info("所有文件上传成功！")
+
+          except Exception as e:
+              logger.error(f"部署过程中发生未预期的错误: {e}")
+              sys.exit(1)
+          EOF
