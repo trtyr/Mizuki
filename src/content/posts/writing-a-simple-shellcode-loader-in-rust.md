@@ -1,6 +1,6 @@
 ---
 title: 用 Rust 写一个简单的 ShellCode 加载器
-published: 2025-10-08
+published: 2025-10-11
 description: 本文介绍了如何使用 Rust 编写一个简单的 ShellCode 加载器，通过 Windows API 实现内存分配、代码复制和线程创建来执行 ShellCode。
 tags: [Rust, Windows, ShellCode]
 category: 免杀
