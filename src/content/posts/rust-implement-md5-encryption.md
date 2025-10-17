@@ -2,7 +2,7 @@
 title: Rust 实现 MD5 加密
 published: 2025-10-17
 description: 本文介绍了如何使用 Rust 实现 MD5 加密，包括对字符串进行加密和获取文件的 MD5 哈希值。
-tags: [Rust, 加密]
+tags: [Rust, 加解密]
 category: 编程技术
 draft: false
 ---
