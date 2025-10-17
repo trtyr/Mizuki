@@ -201,7 +201,7 @@ fn main() {
 
 本地效果：
 
-<img src="https://personal-knowledge-base-1314508256.cos.ap-shanghai.myqcloud.com/Asset/images/%E5%8F%8D%E5%BE%AE%E6%AD%A5%E5%8A%A8%E6%80%81%E6%B2%99%E7%AE%B1%20-%20%E6%A1%8C%E9%9D%A2%E5%A3%81%E7%BA%B8%E8%B7%AF%E5%BE%84-3.png" alt="Count 统计" width="800" />
+<img src="https://personal-knowledge-base-1314508256.cos.ap-shanghai.myqcloud.com/Asset/images/%E5%8F%8D%E5%BE%AE%E6%AD%A5%E5%8A%A8%E6%80%81%E6%B2%99%E7%AE%B1%20-%20%E6%A1%8C%E9%9D%A2%E5%A3%81%E7%BA%B8%E8%B7%AF%E5%BE%84-3.png" alt="Count 统计" />
 
 微步沙箱：
 
