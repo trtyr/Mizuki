@@ -37,60 +37,43 @@ draft: false
 代码如下
 
 ```Rust
-pub fn shell_code_to_ipv6(hex: Vec<u8>) -> Vec<String> {
-    // 返回 ipv6
+pub fn shell_code_to_ipv6(byte: &[u8]) -> Vec<String> {
     let mut ipv6_address: Vec<String> = Vec::new();
 
-    // 获取 ShellCode 长度，长度保险一点，这里用了 u64
-    let length = hex.len() as u64;
+    let length = byte.len() as u8;
 
-    // 拼接 length + hex -> data
     let mut data = Vec::new();
-    data.extend_from_slice(&length.to_be_bytes());
-    data.extend_from_slice(&hex);
+    data.push(length);
+    // println!("{:?}", data);
 
-    // 此时的 data 应该是 [长度, 后面是 hex 的数据]
-    // println!("{:X?}", data);
-
-    // 给它按照 16 个字节进行分组，这里返回了一个迭代器
-    let chunks = data.chunks(16);
-
-    for i in chunks {
-        // 创建一个数组用来默认填充 0
-        let mut ipv6_bytes = [0; 16];
-
-        // 因为可能最后的切片不是 16 个字节，我们需要使用切片，在 `[..i.len()]`里插入当前的 i，然后 [0; 16] 会自动补全 0
-        ipv6_bytes[..i.len()].copy_from_slice(&i);
-
-        // 此时我们能够得到这样的结果:
-        // chunk: [83, 83, 72, 137, 231, 72, 137, 241, 72, 137, 218, 65, 184, 0, 32, 0]
-        // chunk: [170, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        // println!("chunk: {:?}", ipv6_byte);
-
-        let segments = ipv6_bytes
-            .chunks(2) // 两个字节作为一组, 返回一个迭代器。
-            .map(|byte| u16::from_be_bytes([byte[0], byte[1]])) // byte 其实就是 [p1,p2] 这样的数据，对 p1 和 p2 进行 U16 类型转换
-            .collect::<Vec<u16>>();
-
-        // 现在得到这样的数据: segments: [a0fc, 4883, e4f0, e8c8, 0, 41, 5141, 5052]
-        // println!("segments: {:x?}", segments);
-
-        // 对数据进行格式化，变成 IPv6 样式
-        let add_str = segments
-            .iter()
-            .map(|i| format!("{:04X}", i)) // 格式化一下
-            .collect::<Vec<String>>() // 收集起来，得到 Vec<String> 类型的数据
-            .join(":"); // 将数据和数据之间，用`:`连接
-
-        // 得到这样的数据: A0FC4883E4F0E8C80000004151415052
-        // println!("{}", add_str);
-
-        ipv6_address.push(add_str);
+    for &i in byte.iter() {
+        data.push(i)
     }
 
-    ipv6_address
-}
+    // println!("{:?}", data);
 
+    let chunks = data.chunks(16);
+
+    for chunk in chunks {
+        // println!("{:x?}", chunk);
+        let mut temp = [0u8; 16];
+        temp[..chunk.len()].copy_from_slice(chunk);
+        // println!("{:x?}", temp);
+
+        let chunk2 = temp.chunks(2).map(|data| u16::from_be_bytes([data[0], data[1]]) ).collect::<Vec<_>>();
+        // println!("{:x?}", chunk2);
+
+        let ipv6 = chunk2.iter().map(|data| format!("{:04X}", data)).collect::<Vec<_>>().join(":");
+        // println!("{}", ipv6);
+
+        ipv6_address.push(ipv6);
+    }
+
+    // println!("ipv6_address {:?}", ipv6_address);
+
+    ipv6_address
+
+}
 ```
 
 效果如下
@@ -102,47 +85,25 @@ pub fn shell_code_to_ipv6(hex: Vec<u8>) -> Vec<String> {
 就是上面的反操作，关键就是，前八个字节为 ShellCode 的原始长度。最后得到一个 vec 类型的数据
 
 ```Rust
-pub fn ipv6_to_shellcode(ipv6_address: Vec<String>) -> Vec<u8> {
-    // 将IPv6 数据变成 原始的 byte 数据
-    // 得到 `[0, 0, 0, 0, 0, 0, 3, 160, ...]` 这样的数据
-    let bytes_ipv6 = ipv6_to_bytes(ipv6_address);
-    // println!("ipv6_to_shellcode: {:?}", hex_ipv6);
-
-    // 做一下分割，得到 [长度, ShellCode]
-    let (len_arr, shellcode_arr) = bytes_ipv6.split_at(8);
-
-    // 把长度提取出来，进行处理，得到十进制数
-    let len_arr: [u8; 8] = len_arr.try_into().unwrap();
-    let length = u64::from_be_bytes(len_arr) as usize;
-
-    // 从剩下的数据里，截取我们需要的长度
-    let shellcode = &shellcode_arr[..length];
-
-    shellcode.to_vec()
-}
-
-fn ipv6_to_bytes(ipv6_address: Vec<String>) -> Vec<u8> {
-    let mut result: Vec<u8> = Vec::new();
-
-    // 迭代一下，得到 address，每个 address 为 0000:4151:4150:5251:5648:31D2:6548:8B52 这样的数据
-    for address in ipv6_address.iter() {
-        // 对 address 根据 `:` 进行分割，返回一个迭代器
-        let segment_str = address.split(":");
-
-        // 使用这个迭代器，得到每个 segment，是 D758 这样的数据
-        for segment in segment_str {
-            // 将 segment 变成 u16 数据，比如这样: 34474
-            let number = u16::from_str_radix(segment, 16).unwrap();
-
-            // 然后在把 number 变成字节, 得到这样的数据: [134, 170]
-            let bytes = number.to_be_bytes();
-
-            // println!("{:?}", bytes);
-
-            result.extend_from_slice(&bytes);
+pub fn ipv6_to_shellcode(ipv6_shellcode: Vec<String>) -> Vec<u8> {
+    let mut temp_u8 = Vec::new();
+    for i in ipv6_shellcode.iter() {
+        let ipv6_split_str = i.split(":").collect::<Vec<&str>>();
+        // println!("{:?}", ipv6_split_str);
+        for ii in ipv6_split_str.into_iter() {
+            let (data1, data2) = (&ii[0.], &ii[2..]);
+            // println!("data1: {}, data2: {}", data1, data2);
+            temp_u8.push(u8::from_str_radix(data1, 16).unwrap());
+            temp_u8.push(u8::from_str_radix(data2, 16).unwrap());
         }
     }
-    result
+
+    // 得到 ShellCode 长度
+    let length = temp_u8[0] as usize;
+    let shellcode = temp_u8[1..=length].to_vec();
+
+    shellcode
+
 }
 
 ```
