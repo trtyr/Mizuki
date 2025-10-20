@@ -40,40 +40,38 @@ draft: false
 pub fn shell_code_to_ipv6(byte: &[u8]) -> Vec<String> {
     let mut ipv6_address: Vec<String> = Vec::new();
 
-    let length = byte.len() as u8;
+    // 使用 u16 存储长度以避免截断
+    let length = byte.len() as u16;
+    let length_bytes = length.to_be_bytes(); // [high_byte, low_byte]
 
     let mut data = Vec::new();
-    data.push(length);
-    // println!("{:?}", data);
+    // 添加长度字节（2字节）
+    data.push(length_bytes[0]);
+    data.push(length_bytes[1]);
 
+    // 添加原始 shellcode 数据
     for &i in byte.iter() {
         data.push(i)
     }
 
-    // println!("{:?}", data);
+    // println!("转换数据: {:x?}", data);
 
     let chunks = data.chunks(16);
 
     for chunk in chunks {
-        // println!("{:x?}", chunk);
         let mut temp = [0u8; 16];
         temp[..chunk.len()].copy_from_slice(chunk);
-        // println!("{:x?}", temp);
 
         let chunk2 = temp.chunks(2).map(|data| u16::from_be_bytes([data[0], data[1]]) ).collect::<Vec<_>>();
-        // println!("{:x?}", chunk2);
 
         let ipv6 = chunk2.iter().map(|data| format!("{:04X}", data)).collect::<Vec<_>>().join(":");
-        // println!("{}", ipv6);
 
         ipv6_address.push(ipv6);
     }
 
-    // println!("ipv6_address {:?}", ipv6_address);
-
     ipv6_address
-
 }
+
 ```
 
 效果如下
@@ -89,21 +87,21 @@ pub fn ipv6_to_shellcode(ipv6_shellcode: Vec<String>) -> Vec<u8> {
     let mut temp_u8 = Vec::new();
     for i in ipv6_shellcode.iter() {
         let ipv6_split_str = i.split(":").collect::<Vec<&str>>();
-        // println!("{:?}", ipv6_split_str);
         for ii in ipv6_split_str.into_iter() {
-            let (data1, data2) = (&ii[0.], &ii[2..]);
-            // println!("data1: {}, data2: {}", data1, data2);
+            let (data1, data2) = (&ii[0..2], &ii[2..]);
             temp_u8.push(u8::from_str_radix(data1, 16).unwrap());
             temp_u8.push(u8::from_str_radix(data2, 16).unwrap());
         }
     }
 
-    // 得到 ShellCode 长度
-    let length = temp_u8[0] as usize;
-    let shellcode = temp_u8[1..=length].to_vec();
+    // 从前两个字节重建长度（u16）
+    let length = u16::from_be_bytes([temp_u8[0], temp_u8[1]]) as usize;
+    println!("还原长度: {}", length);
+
+    // 提取原始 shellcode 数据（跳过前2个长度字节）
+    let shellcode = temp_u8[2..2 + length].to_vec();
 
     shellcode
-
 }
 
 ```
