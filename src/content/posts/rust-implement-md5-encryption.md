@@ -17,7 +17,7 @@ draft: false
 2. 使用 `md5::comput()` 方法对字节进行加密，得到 Digest 实例
 3. 将 Digest 实例变成 Hex
 
-```Rust
+```rust
 fn main() {
     let text = "admin";
     let text_digest = md5::compute(text.as_bytes());
@@ -30,7 +30,7 @@ fn main() {
 
 下面演示一下怎么得到图片的 MD5 Hash
 
-```Rust
+```rust
 use std::fs;
 use std::path::PathBuf;
 

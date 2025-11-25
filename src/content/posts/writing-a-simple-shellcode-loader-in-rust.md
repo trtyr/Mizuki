@@ -13,7 +13,7 @@ draft: false
 
 我们这里采用线程加载。
 
-```Rust
+```rust
 shellcode -> 放进内存中 -> 创建线程，去执行这块内存
 ```
 
@@ -43,7 +43,7 @@ pub unsafe fn VirtualAlloc(
 更多相关的内容，请参考：[VirtualAlloc 函数 （memoryapi.h） - Win32 apps | Microsoft Learn](https://learn.microsoft.com/zh-cn/windows/win32/api/memoryapi/nf-memoryapi-virtualalloc)
 :::
 
-```Rust
+```rust
 use windows::Win32::System::Memory::{VirtualAlloc, MEM_COMMIT, MEM_RESERVE, PAGE_EXECUTE_READWRITE};
 
 fn main() {
@@ -69,7 +69,7 @@ fn main() {
 
 函数签名
 
-```Rust
+```rust
 pub const unsafe fn copy_nonoverlapping<T>(
     src: *const T,
     dst: *mut T,
@@ -87,7 +87,7 @@ pub const unsafe fn copy_nonoverlapping<T>(
 更多相关的内容，请参考：[copy_nonoverlapping in std::ptr - Rust](https://rustwiki.org/zh-CN/std/ptr/fn.copy_nonoverlapping.html)
 :::
 
-```Rust
+```rust
 use windows::Win32::System::Memory::{MEM_COMMIT, MEM_RESERVE, PAGE_EXECUTE_READWRITE, VirtualAlloc};
 
 fn main() {
@@ -111,7 +111,7 @@ fn main() {
 
 下面是它的函数签名
 
-```Rust
+```rust
 pub unsafe fn CreateThread(
     lpthreadattributes: Option<*const SECURITY_ATTRIBUTES>,
     dwstacksize: usize,
@@ -138,7 +138,7 @@ pub unsafe fn CreateThread(
 更多相关的内容，请参考：[CreateThread function (processthreadsapi.h) - Win32 apps | Microsoft Learn](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread)
 :::
 
-```Rust
+```rust
 use windows::Win32::System::Memory::{MEM_COMMIT, MEM_RESERVE, PAGE_EXECUTE_READWRITE, VirtualAlloc};
 use windows::Win32::System::Threading::{CreateThread, THREAD_CREATION_FLAGS};
 
@@ -181,7 +181,7 @@ fn main() {
 
 函数签名
 
-```Rust
+```rust
 pub unsafe fn WaitForSingleObject(
     hhandle: HANDLE,
     dwmilliseconds: u32,
@@ -203,7 +203,7 @@ pub unsafe fn WaitForSingleObject(
         - 0：完全不等待。函数会立即检查一次线程句柄的状态然后返回。这可以用来"轮询"一个线程是否结束，但效率不高。
         - `INFINITE (0xFFFFFFFF)`：它表示无限期等待，直到线程句柄变为 "Signaled" 状态为止。函数将永远阻塞在这里，直到我们等待的线程自己结束。
 
-```Rust
+```rust
 use windows::Win32::Foundation::CloseHandle;
 use windows::Win32::System::Memory::{MEM_COMMIT, MEM_RESERVE, PAGE_EXECUTE_READWRITE, VirtualAlloc};
 use windows::Win32::System::Threading::{

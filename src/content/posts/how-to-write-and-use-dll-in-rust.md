@@ -143,7 +143,7 @@ fn main() {
 
 代码如下
 
-```Rust
+```rust
 use libloading::{Library, Symbol};
 
 // 定义一个函数签名
@@ -204,7 +204,7 @@ crate-type = ["cdylib"]
 
 我们写一个 greet 函数。
 
-```Rust
+```rust
 use std::ffi::{c_char, CStr};
 
 #[unsafe(no_mangle)]
@@ -225,7 +225,7 @@ pub unsafe extern "system" fn greet(str: *const c_char) {
 
 我们尝试用 Rust 和 C 分别使用这个 DLL
 
-```Rust
+```rust
 use libloading::{Library, Symbol};
 use std::ffi::{c_char, CString};
 

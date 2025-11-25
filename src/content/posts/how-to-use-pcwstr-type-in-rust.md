@@ -11,7 +11,7 @@ draft: false
 
 在 Windows 中有这么一个常见的类型：`PCWSTR` 类型，这是一个指向 16 位 Unicode 字符的常量以 null 结尾的字符串的指针。该类型在 `windows-rs` Crate 很多地方都被使用，比如说 `MessageBoxW`
 
-```Rust
+```rust
 pub unsafe fn MessageBoxW<P1, P2>(
     hwnd: Option<super::super::Foundation::HWND>,
     lptext: P1,
@@ -27,7 +27,7 @@ where
 
 正常处理字面量的时候，我们可以用 `w!` 来直接转化。
 
-```Rust
+```rust
 use windows::Win32::UI::WindowsAndMessaging::MessageBoxW;
 use windows::core::w;
 
@@ -47,7 +47,7 @@ fn main() {
 `w!` 宏只能接受字面量，不能接受变量。因此，我们无法通过 `w!` 对变量进行自动转换。
 :::
 
-```Rust
+```rust
 use windows::Win32::UI::WindowsAndMessaging::MessageBoxW;
 use windows::core::w;
 
@@ -94,7 +94,7 @@ note: while trying to match meta-variable `$s:literal`
 
 具体的实现如下
 
-```Rust
+```rust
 fn transform_to_pcwstr(context: &str) -> PCWSTR {
     // 第一步，将 context 变成 UTF-16 类型
     let mut utf16: Vec<u16> = context.encode_utf16().collect();
@@ -113,7 +113,7 @@ fn transform_to_pcwstr(context: &str) -> PCWSTR {
 这个实现虽然简单，但有一个问题：返回的 `PCWSTR` 是一个指向函数内部 `Vec<u16>` 的裸指针。当函数返回后，`Vec` 会被销毁，导致指针悬空，引发未定义行为。
 :::
 
-```Rust
+```rust
 use windows::Win32::UI::WindowsAndMessaging::MessageBoxW;
 use windows::core::PCWSTR;
 
@@ -138,7 +138,7 @@ fn create_wide_string(s: &str) -> Vec<u16> {
 
 但是不够优雅，我们直接把 `MessageBoxW` 封装起来。
 
-```Rust
+```rust
 use windows::Win32::UI::WindowsAndMessaging::MessageBoxW;
 use windows::core::PCWSTR;
 

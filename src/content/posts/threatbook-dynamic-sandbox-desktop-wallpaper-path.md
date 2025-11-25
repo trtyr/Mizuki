@@ -19,7 +19,7 @@ draft: false
 
 这里使用的是本地文件保存和弹窗，具体的代码如下
 
-```Rust
+```rust
 #![windows_subsystem = "windows"]
 use std::fs;
 use windows::core::PCWSTR;
@@ -112,7 +112,7 @@ fn main() {
 
 如果不是这个路径，我们直接返回 `panic!`，或者弹一个窗口。
 
-```Rust
+```rust
 #![windows_subsystem = "windows"]
 use windows::Win32::UI::WindowsAndMessaging::SystemParametersInfoW;
 use windows::Win32::UI::WindowsAndMessaging::{

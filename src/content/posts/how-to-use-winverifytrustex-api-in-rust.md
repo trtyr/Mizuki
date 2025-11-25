@@ -100,7 +100,7 @@ pub struct WINTRUST_DATA {
 
 下面是其在 Rust 中的签名
 
-```Rust
+```rust
 pub union WINTRUST_DATA_0 {
     pub pFile: *mut WINTRUST_FILE_INFO,
     pub pCatalog: *mut WINTRUST_CATALOG_INFO,
@@ -202,7 +202,7 @@ graph TD
 
 下面是一个简单的示例：
 
-```Rust
+```rust
 use std::{mem::size_of, ptr};
 use windows::core::{PCWSTR, PWSTR};
 use windows::Win32::Foundation::{HANDLE, HWND};

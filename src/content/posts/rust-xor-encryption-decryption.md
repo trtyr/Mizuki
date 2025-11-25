@@ -9,7 +9,7 @@ draft: false
 
 准备 data 和 key
 
-```Rust
+```rust
 fn main() {
 	let data = "hello world";
     let key = "adminadmina";
@@ -20,7 +20,7 @@ fn main() {
 
 然后我们在参数里放一个开关，好让我们能够用 `match` 枚举选择用哪个模式。
 
-```Rust
+```rust
 enum XorOutPut {
     Decode(String),
     Encode(Vec<u8>),
@@ -39,7 +39,7 @@ fn xor_cipher<T>(data: &str, key: &str, p: Operation) -> Result<XorOutPut, Strin
 1. 检查 `data` 和 `key` 的长度是否相等
 2. 区分加密操作和解密操作
 
-```Rust
+```rust
 fn xor_cipher<T>(data: &str, key: &str, p: Operation) -> Result<XorOutPut, String> {
     if data.len() != key.len() {
         return Err(format!(
@@ -61,7 +61,7 @@ fn xor_cipher<T>(data: &str, key: &str, p: Operation) -> Result<XorOutPut, Strin
 
 首先是加密操作，将 `data` 变成 `byte` 类型，然后挨个和 `key` 进行 `XOR` 操作即可。
 
-```Rust
+```rust
     match p {
         Operation::Encrypt => {
             let data = data.as_bytes();
@@ -83,7 +83,7 @@ fn xor_cipher<T>(data: &str, key: &str, p: Operation) -> Result<XorOutPut, Strin
 1. 把它分离出去
 2. 把传递进来的 `&str` 改成 `&[u8]`
 
-```Rust
+```rust
 fn xor_core(data: &[u8], key: &[u8]) -> Vec<u8> {
     let result = data
         .iter()
@@ -116,7 +116,7 @@ fn xor_cipher<T>(data: &[u8], key: &[u8], p: Operation) -> Result<XorOutPut, Str
 
 然后是解密操作，现在 data 传进来的就是加密后的 `&[u8]`，把它变成 `Vec<u8>`，然后变成 UTF-8 即可
 
-```Rust
+```rust
 match p {
     Operation::Encrypt => {
         let data = data;
@@ -133,7 +133,7 @@ match p {
 
 然后调用即可，完整代码如下
 
-```Rust
+```rust
 fn main() {
     let data = "hello world";
     let key = "adminadmina";

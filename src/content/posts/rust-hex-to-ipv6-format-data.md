@@ -36,7 +36,7 @@ draft: false
 
 代码如下
 
-```Rust
+```rust
 pub fn shell_code_to_ipv6(byte: &[u8]) -> Vec<String> {
     let mut ipv6_address: Vec<String> = Vec::new();
 
@@ -82,7 +82,7 @@ pub fn shell_code_to_ipv6(byte: &[u8]) -> Vec<String> {
 
 就是上面的反操作，关键就是，前八个字节为 ShellCode 的原始长度。最后得到一个 vec 类型的数据
 
-```Rust
+```rust
 pub fn ipv6_to_shellcode(ipv6_shellcode: Vec<String>) -> Vec<u8> {
     let mut temp_u8 = Vec::new();
     for i in ipv6_shellcode.iter() {
