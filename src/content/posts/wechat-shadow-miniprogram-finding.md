@@ -37,9 +37,6 @@ draft: false
 
 微信小程序提供了一个 `# wx.navigateToMiniProgram(Object object)` 接口，该接口的功能为**打开另一个小程序**
 
-> [!Link]
->
-> API 接口：https://developers.weixin.qq.com/miniprogram/dev/api/navigate/wx.navigateToMiniProgram.html
 
 相关的参数：
 

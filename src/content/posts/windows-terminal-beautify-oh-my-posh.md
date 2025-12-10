@@ -19,12 +19,6 @@ winget install JanDeDobbeleer.OhMyPosh --source winget --scope user --force
 
 如需为所有用户安装，将 `--scope user` 替换为 `--scope machine`。
 
-:::note
-如遇 PowerShell 脚本策略限制，可执行：
-```powershell
-Set-ExecutionPolicy RemoteSigned -Scope LocalMachine
-```
-:::
 
 ### 安装 Nerd Font 字体
 
@@ -216,5 +210,3 @@ Import-Module ZLocation
    Remove-Item $env:USERPROFILE\.config\ohmyposh -Force -Recurse -ErrorAction SilentlyContinue
    ```
 4. 编辑 PowerShell 配置文件（`$PROFILE`），移除相关配置。
-
-

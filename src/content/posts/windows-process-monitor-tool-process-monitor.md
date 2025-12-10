@@ -352,9 +352,6 @@ Count Occurrences 在 `Event -> Count Occurrences` 这里。
 
 <img src="https://personal-knowledge-base-1314508256.cos.ap-shanghai.myqcloud.com/Asset/images/Windows%20%E8%BF%9B%E7%A8%8B%E7%9B%91%E6%8E%A7%E5%B7%A5%E5%85%B7%EF%BC%9AProcess%20Monitor-25.png" alt="Count 统计" width="800" />
 
-::::warning[注意]
-在对如 `Path` 这类高基数字段做统计或计数时，可能造成界面无响应或卡顿。
-::::
 
 #### Filter 配置保存
 

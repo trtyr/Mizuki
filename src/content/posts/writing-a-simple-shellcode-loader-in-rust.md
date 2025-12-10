@@ -39,9 +39,6 @@ pub unsafe fn VirtualAlloc(
 - `flallocationtype`：内存分配方式，`MEM_COMMIT`、`MEM_RESERVE` 等
 - `flprotect`：页面访问保护属性，`PAGE_EXECUTE_READWRITE`、`PAGE_EXECUTE_READWRITE` 等
 
-:::note
-更多相关的内容，请参考：[VirtualAlloc 函数 （memoryapi.h） - Win32 apps | Microsoft Learn](https://learn.microsoft.com/zh-cn/windows/win32/api/memoryapi/nf-memoryapi-virtualalloc)
-:::
 
 ```rust
 use windows::Win32::System::Memory::{VirtualAlloc, MEM_COMMIT, MEM_RESERVE, PAGE_EXECUTE_READWRITE};
@@ -83,9 +80,6 @@ pub const unsafe fn copy_nonoverlapping<T>(
 
 > 注意：单位是泛型 T 的大小，而不是字节。例如，如果 T 是 `u32`（4 字节），count 是 10，那么总共会复制 10 \* 4 = 40 字节。在我们的 Shellcode 示例中，T 是 `u8`，所以 count 恰好等于字节数。
 
-:::note
-更多相关的内容，请参考：[copy_nonoverlapping in std::ptr - Rust](https://rustwiki.org/zh-CN/std/ptr/fn.copy_nonoverlapping.html)
-:::
 
 ```rust
 use windows::Win32::System::Memory::{MEM_COMMIT, MEM_RESERVE, PAGE_EXECUTE_READWRITE, VirtualAlloc};
@@ -134,9 +128,6 @@ pub unsafe fn CreateThread(
 - 成功：返回一个指向新线程的句柄 (`HANDLE`)。这个句柄拥有对线程的完全控制权，可以用来等待、暂停、恢复或终止线程。
 - 失败：返回一个无效句柄 (`INVALID_HANDLE_VALUE`)。可以通过 `GetLastError` 获取具体的错误代码。
 
-:::note
-更多相关的内容，请参考：[CreateThread function (processthreadsapi.h) - Win32 apps | Microsoft Learn](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread)
-:::
 
 ```rust
 use windows::Win32::System::Memory::{MEM_COMMIT, MEM_RESERVE, PAGE_EXECUTE_READWRITE, VirtualAlloc};

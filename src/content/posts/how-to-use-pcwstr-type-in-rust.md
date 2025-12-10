@@ -43,9 +43,6 @@ fn main() {
 }
 ```
 
-:::important
-`w!` 宏只能接受字面量，不能接受变量。因此，我们无法通过 `w!` 对变量进行自动转换。
-:::
 
 ```rust
 use windows::Win32::UI::WindowsAndMessaging::MessageBoxW;
@@ -109,9 +106,6 @@ fn transform_to_pcwstr(context: &str) -> PCWSTR {
 }
 ```
 
-:::caution[生命周期问题]
-这个实现虽然简单，但有一个问题：返回的 `PCWSTR` 是一个指向函数内部 `Vec<u16>` 的裸指针。当函数返回后，`Vec` 会被销毁，导致指针悬空，引发未定义行为。
-:::
 
 ```rust
 use windows::Win32::UI::WindowsAndMessaging::MessageBoxW;
