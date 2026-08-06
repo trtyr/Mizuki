@@ -11,7 +11,7 @@ export const LOCAL_PLAYLIST: Song[] = [
 		artist: "Dazbee",
 		cover: "assets/music/cover/dazbee.webp",
 		url: "assets/music/url/dazbee.mp3",
-		duration: 0,
+		duration: 241,
 	},
 	{
 		id: 2,
@@ -19,7 +19,7 @@ export const LOCAL_PLAYLIST: Song[] = [
 		artist: "Kaya",
 		cover: "assets/music/cover/hitori.webp",
 		url: "assets/music/url/hitori.mp3",
-		duration: 240,
+		duration: 253,
 	},
 	{
 		id: 3,
@@ -27,7 +27,7 @@ export const LOCAL_PLAYLIST: Song[] = [
 		artist: "ス리즈ブーケ",
 		cover: "assets/music/cover/xryx.webp",
 		url: "assets/music/url/xryx.mp3",
-		duration: 180,
+		duration: 245,
 	},
 	{
 		id: 4,
@@ -35,7 +35,7 @@ export const LOCAL_PLAYLIST: Song[] = [
 		artist: "22/7",
 		cover: "assets/music/cover/cl.webp",
 		url: "assets/music/url/cl.mp3",
-		duration: 200,
+		duration: 242,
 	},
 ];
 
