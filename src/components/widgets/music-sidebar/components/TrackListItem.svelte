@@ -1,6 +1,7 @@
 <script lang="ts">
 import Icon from "@iconify/svelte";
 
+import { resolveAssetUrl } from "@/utils/asset-url";
 import type { Song } from "../../music-player/types";
 
 interface Props {
@@ -11,16 +12,6 @@ interface Props {
 }
 
 const { song, isCurrent, isPlaying, onclick }: Props = $props();
-
-function getAssetPath(path: string): string {
-	if (path.startsWith("http://") || path.startsWith("https://")) {
-		return path;
-	}
-	if (path.startsWith("/")) {
-		return path;
-	}
-	return `/${path}`;
-}
 </script>
 
 <div
@@ -40,7 +31,7 @@ function getAssetPath(path: string): string {
 >
 	<div class="cover-shell">
 		<img
-			src={getAssetPath(song.cover)}
+			src={resolveAssetUrl(song.cover)}
 			alt={song.title}
 			loading="lazy"
 			class="item-cover"

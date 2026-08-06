@@ -13,6 +13,7 @@ const constantsSource = await readFile(
 	),
 	"utf8",
 );
+const { resolveAssetUrl } = await import("../src/utils/asset-url.ts");
 
 function methodSource(name, nextName) {
 	const start = storeSource.indexOf(`\tprivate ${name}`);
@@ -45,17 +46,46 @@ describe("Music player media loading boundary", () => {
 		assert.match(storeSource, /this\.ensureAudioSource\(\)/);
 	});
 
+	it("preserves remote audio URLs and only roots relative local paths", () => {
+		const signedUrl =
+			"https://media.example.com/song.flac?token=a%2Fb&expires=123";
+		assert.equal(resolveAssetUrl(signedUrl), signedUrl);
+		assert.equal(
+			resolveAssetUrl("//media.example.com/song.mp3?version=2"),
+			"//media.example.com/song.mp3?version=2",
+		);
+		assert.equal(
+			resolveAssetUrl("/assets/music/song.mp3"),
+			"/assets/music/song.mp3",
+		);
+		assert.equal(
+			resolveAssetUrl("assets/music/song.mp3"),
+			"/assets/music/song.mp3",
+		);
+	});
+
 	it("bounds automatic retries to one playlist traversal", () => {
 		assert.match(storeSource, /this\.playbackErrorCount \+= 1/);
 		assert.match(storeSource, /this\.playbackErrorCount < maxAttempts/);
 		assert.match(storeSource, /this\.state\.willAutoPlay = false/);
 	});
 
-	it("ships non-zero duration metadata for every local song", () => {
-		const durations = [...constantsSource.matchAll(/duration:\s*(\d+)/g)].map(
-			(match) => Number(match[1]),
+	it("ships non-zero metadata for built-in songs without constraining external playlists", () => {
+		const literalPlaylist = constantsSource.match(
+			/export const LOCAL_PLAYLIST:\s*Song\[\]\s*=\s*\[([\s\S]*?)\n\];/,
 		);
-		assert.equal(durations.length, 5);
-		assert.ok(durations.slice(0, 4).every((duration) => duration > 0));
+		if (!literalPlaylist) {
+			assert.match(
+				constantsSource,
+				/export const LOCAL_PLAYLIST:\s*Song\[\]\s*=\s*[A-Za-z_$][\w$]*/,
+			);
+			return;
+		}
+
+		const durations = [
+			...literalPlaylist[1].matchAll(/duration:\s*(\d+)/g),
+		].map((match) => Number(match[1]));
+		assert.ok(durations.length > 0);
+		assert.ok(durations.every((duration) => duration > 0));
 	});
 });

@@ -1,6 +1,7 @@
 <script lang="ts">
 import Icon from "@iconify/svelte";
 
+import { resolveAssetUrl } from "@/utils/asset-url";
 import Key from "../../../../i18n/i18nKey";
 import { i18n } from "../../../../i18n/translation";
 
@@ -21,16 +22,6 @@ const {
 	onclick,
 	interactive = false,
 }: Props = $props();
-
-function getAssetPath(path: string): string {
-	if (path.startsWith("http://") || path.startsWith("https://")) {
-		return path;
-	}
-	if (path.startsWith("/")) {
-		return path;
-	}
-	return `/${path}`;
-}
 
 const containerClasses = {
 	mini: "cover-container relative w-12 h-12 rounded-full overflow-hidden",
@@ -93,7 +84,7 @@ const containerClasses = {
 			: i18n(Key.musicPlayerPlay)}
 	>
 		<img
-			src={getAssetPath(cover)}
+			src={resolveAssetUrl(cover)}
 			alt={i18n(Key.musicPlayerCover)}
 			loading="eager"
 			fetchpriority="high"
@@ -122,7 +113,7 @@ const containerClasses = {
 {:else}
 	<div class={containerClasses[size]}>
 		<img
-			src={getAssetPath(cover)}
+			src={resolveAssetUrl(cover)}
 			alt={i18n(Key.musicPlayerCover)}
 			loading="eager"
 			fetchpriority="high"
