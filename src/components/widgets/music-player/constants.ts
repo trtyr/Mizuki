@@ -4,6 +4,8 @@ export const STORAGE_KEY_VOLUME = "music-player-volume";
 
 export const DEFAULT_VOLUME = 0.7;
 
+export const DEFAULT_COVER_URL = "/favicon/favicon.ico";
+
 export const LOCAL_PLAYLIST: Song[] = [
 	{
 		id: 1,
@@ -42,7 +44,7 @@ export const LOCAL_PLAYLIST: Song[] = [
 export const DEFAULT_SONG: Song = {
 	title: "Sample Song",
 	artist: "Sample Artist",
-	cover: "/favicon/favicon.ico",
+	cover: DEFAULT_COVER_URL,
 	url: "",
 	duration: 0,
 	id: 0,

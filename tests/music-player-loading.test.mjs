@@ -13,6 +13,27 @@ const constantsSource = await readFile(
 	),
 	"utf8",
 );
+const coverImageSource = await readFile(
+	new URL(
+		"../src/components/widgets/music-player/atoms/CoverImage.svelte",
+		import.meta.url,
+	),
+	"utf8",
+);
+const playlistItemSource = await readFile(
+	new URL(
+		"../src/components/widgets/music-player/atoms/PlaylistItem.svelte",
+		import.meta.url,
+	),
+	"utf8",
+);
+const sidebarTrackSource = await readFile(
+	new URL(
+		"../src/components/widgets/music-sidebar/components/TrackListItem.svelte",
+		import.meta.url,
+	),
+	"utf8",
+);
 const { resolveAssetUrl } = await import("../src/utils/asset-url.ts");
 
 function methodSource(name, nextName) {
@@ -67,7 +88,37 @@ describe("Music player media loading boundary", () => {
 	it("bounds automatic retries to one playlist traversal", () => {
 		assert.match(storeSource, /this\.playbackErrorCount \+= 1/);
 		assert.match(storeSource, /this\.playbackErrorCount < maxAttempts/);
-		assert.match(storeSource, /this\.state\.willAutoPlay = false/);
+		const handleAudioError = methodSource(
+			"handleAudioError",
+			"handleAudioLoaded",
+		);
+		assert.match(
+			handleAudioError,
+			/if \(!this\.state\.willAutoPlay\)\s*{\s*return/,
+		);
+		const pause = storeSource.slice(
+			storeSource.indexOf("\tpause(): void"),
+			storeSource.indexOf("\tnext(", storeSource.indexOf("\tpause(): void")),
+		);
+		assert.match(pause, /this\.resetErrorRetryBudget\(\)/);
+	});
+
+	it("uses a real fallback URL when external playlists omit cover art", () => {
+		assert.match(
+			constantsSource,
+			/DEFAULT_COVER_URL\s*=\s*"\/favicon\/favicon\.ico"/,
+		);
+		assert.match(
+			storeSource,
+			/cover:\s*\(song\.pic as string \| undefined\) \|\| DEFAULT_COVER_URL/,
+		);
+		for (const source of [
+			coverImageSource,
+			playlistItemSource,
+			sidebarTrackSource,
+		]) {
+			assert.match(source, /resolveAssetUrl\([^\n]*\|\| DEFAULT_COVER_URL\)/);
+		}
 	});
 
 	it("ships non-zero metadata for built-in songs without constraining external playlists", () => {

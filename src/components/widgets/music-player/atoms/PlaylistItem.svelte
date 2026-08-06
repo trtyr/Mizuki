@@ -1,7 +1,7 @@
 <script lang="ts">
 import Icon from "@iconify/svelte";
-
 import { resolveAssetUrl } from "@/utils/asset-url";
+import { DEFAULT_COVER_URL } from "../constants";
 import type { Song } from "../types";
 
 interface Props {
@@ -54,7 +54,7 @@ const {
 		class="w-10 h-10 rounded-lg overflow-hidden bg-[var(--btn-regular-bg)] flex-shrink-0"
 	>
 		<img
-			src={resolveAssetUrl(song.cover)}
+			src={resolveAssetUrl(song.cover || DEFAULT_COVER_URL)}
 			alt={song.title}
 			loading={lazy ? "lazy" : "eager"}
 			decoding="async"

@@ -1,6 +1,7 @@
 <script lang="ts">
 import Icon from "@iconify/svelte";
 
+import { DEFAULT_COVER_URL } from "@/components/widgets/music-player/constants";
 import { resolveAssetUrl } from "@/utils/asset-url";
 import Key from "../../../../i18n/i18nKey";
 import { i18n } from "../../../../i18n/translation";
@@ -84,7 +85,7 @@ const containerClasses = {
 			: i18n(Key.musicPlayerPlay)}
 	>
 		<img
-			src={resolveAssetUrl(cover)}
+			src={resolveAssetUrl(cover || DEFAULT_COVER_URL)}
 			alt={i18n(Key.musicPlayerCover)}
 			loading="eager"
 			fetchpriority="high"
@@ -113,7 +114,7 @@ const containerClasses = {
 {:else}
 	<div class={containerClasses[size]}>
 		<img
-			src={resolveAssetUrl(cover)}
+			src={resolveAssetUrl(cover || DEFAULT_COVER_URL)}
 			alt={i18n(Key.musicPlayerCover)}
 			loading="eager"
 			fetchpriority="high"

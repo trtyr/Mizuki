@@ -2,6 +2,7 @@ import Key from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 
 import {
+	DEFAULT_COVER_URL,
 	DEFAULT_SONG,
 	LOCAL_PLAYLIST,
 	SKIP_ERROR_DELAY,
@@ -185,6 +186,9 @@ class MusicPlayerStore {
 		) {
 			this.errorRetryTimer = setTimeout(() => {
 				this.errorRetryTimer = null;
+				if (!this.state.willAutoPlay) {
+					return;
+				}
 				this.advanceToNext(true);
 			}, SKIP_ERROR_DELAY);
 		} else {
@@ -329,7 +333,7 @@ class MusicPlayerStore {
 					: ((song.id as number | undefined) ?? 0),
 			title,
 			artist,
-			cover: (song.pic as string | undefined) ?? "",
+			cover: (song.pic as string | undefined) || DEFAULT_COVER_URL,
 			url: (song.url as string | undefined) ?? "",
 			duration: dur,
 		};
@@ -444,6 +448,7 @@ class MusicPlayerStore {
 		}
 		if (this.state.isPlaying) {
 			this.state.willAutoPlay = false;
+			this.resetErrorRetryBudget();
 			this.audio.pause();
 		} else {
 			this.requestPlayback(true);
@@ -462,6 +467,7 @@ class MusicPlayerStore {
 			return;
 		}
 		this.state.willAutoPlay = false;
+		this.resetErrorRetryBudget();
 		this.audio.pause();
 	}
 
