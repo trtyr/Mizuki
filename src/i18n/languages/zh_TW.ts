@@ -69,8 +69,8 @@ export const zh_TW: Translation = {
 	[Key.animeTitle]: "我的追番記錄",
 	[Key.animeSubtitle]: "記錄我的二次元之旅",
 	[Key.animeStatusWatching]: "觀看中",
-	[Key.animeStatusCompleted]: "已完成",
-	[Key.animeStatusPlanned]: "打算看",
+	[Key.animeStatusCompleted]: "已看完",
+	[Key.animeStatusPlanned]: "想要看",
 	[Key.animeStatusOnHold]: "暫置中",
 	[Key.animeStatusDropped]: "已放棄",
 	[Key.animeFilterAll]: "全部",
@@ -88,7 +88,7 @@ export const zh_TW: Translation = {
 	// 短文頁面
 	[Key.diarySubtitle]: "隨時隨地，分享生活",
 	[Key.diaryNoResults]: "沒有相符的日記",
-	[Key.diaryCount]: "條日記",
+	[Key.diaryCount]: "個日記",
 
 	[Key.diaryTips]: "只展示最近 30 個日記",
 	[Key.diaryMinutesAgo]: "分鐘前",
