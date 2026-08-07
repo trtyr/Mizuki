@@ -46,54 +46,59 @@ import { remarkFixGithubAdmonitions } from "./src/plugins/remark-fix-github-admo
 import { remarkMermaid } from "./src/plugins/remark-mermaid.js";
 import { remarkPlantuml } from "./src/plugins/remark-plantuml.mjs";
 import { remarkWikiLink } from "./src/plugins/remark-wiki-link.mjs";
+import { resolveFontMode } from "./src/utils/fontMode.ts";
+
+const customFontsEnabled = resolveFontMode(siteConfig) === "custom";
 
 // https://astro.build/config
 export default defineConfig({
-	fonts: [
-		{
-			name: "JetBrains Mono",
-			cssVariable: "--font-jetbrains-mono",
-			provider: fontProviders.fontsource(),
-			styles: ["normal", "italic"],
-		},
-		{
-			name: "ZenMaruGothic-Medium",
-			cssVariable: "--font-body",
-			provider: fontProviders.local(),
-			options: {
-				variants: [
-					{
-						src: ["./src/assets/fonts/ZenMaruGothic-Medium.ttf"],
-						weight: "500",
-						style: "normal",
+	fonts: customFontsEnabled
+		? [
+				{
+					name: "JetBrains Mono",
+					cssVariable: "--font-jetbrains-mono",
+					provider: fontProviders.fontsource(),
+					styles: ["normal", "italic"],
+				},
+				{
+					name: "ZenMaruGothic-Medium",
+					cssVariable: "--font-body",
+					provider: fontProviders.local(),
+					options: {
+						variants: [
+							{
+								src: ["./src/assets/fonts/ZenMaruGothic-Medium.woff2"],
+								weight: "500",
+								style: "normal",
+							},
+						],
 					},
-				],
-			},
-			// These variables are composed into --font-sans below. Keep their
-			// fallback lists empty; otherwise a system fallback after this Latin
-			// font prevents the following CJK font from ever being considered.
-			fallbacks: [],
-			optimizedFallbacks: false,
-		},
-		{
-			name: "Loli",
-			cssVariable: "--font-cjk",
-			provider: fontProviders.local(),
-			options: {
-				variants: [
-					{
-						src: ["./src/assets/fonts/loli.ttf"],
-						weight: "400",
-						style: "normal",
+					// These variables are composed into --font-sans below. Keep their
+					// fallback lists empty; otherwise a system fallback after this Latin
+					// font prevents the following CJK font from ever being considered.
+					fallbacks: [],
+					optimizedFallbacks: false,
+				},
+				{
+					name: "Loli",
+					cssVariable: "--font-cjk",
+					provider: fontProviders.local(),
+					options: {
+						variants: [
+							{
+								src: ["./src/assets/fonts/loli.woff2"],
+								weight: "400",
+								style: "normal",
+							},
+						],
 					},
-				],
-			},
-			// The final system fallback belongs to --font-sans, not this partial
-			// CJK font stack.
-			fallbacks: [],
-			optimizedFallbacks: false,
-		},
-	],
+					// The final system fallback belongs to --font-sans, not this partial
+					// CJK font stack.
+					fallbacks: [],
+					optimizedFallbacks: false,
+				},
+			]
+		: [],
 
 	site: siteConfig.siteURL,
 	base: "/",
@@ -180,7 +185,7 @@ export default defineConfig({
 				borderColor: "none",
 				codeFontSize: "0.875rem",
 				codeFontFamily:
-					"var(--font-jetbrains-mono), SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+					"var(--font-jetbrains-mono, ui-monospace), SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
 				codeLineHeight: "1.5rem",
 				frames: {
 					editorBackground: "var(--codeblock-bg)",
