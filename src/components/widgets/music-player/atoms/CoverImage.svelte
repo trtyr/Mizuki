@@ -87,8 +87,8 @@ const containerClasses = {
 		<img
 			src={resolveAssetUrl(cover || DEFAULT_COVER_URL)}
 			alt={i18n(Key.musicPlayerCover)}
-			loading="eager"
-			fetchpriority="high"
+			loading="lazy"
+			fetchpriority="low"
 			class="w-full h-full object-cover transition-transform duration-300"
 			class:spinning={isPlaying && !isLoading}
 			class:animate-pulse={isLoading}
@@ -116,8 +116,8 @@ const containerClasses = {
 		<img
 			src={resolveAssetUrl(cover || DEFAULT_COVER_URL)}
 			alt={i18n(Key.musicPlayerCover)}
-			loading="eager"
-			fetchpriority="high"
+			loading="lazy"
+			fetchpriority="low"
 			class="w-full h-full object-cover transition-transform duration-300"
 			class:spinning={isPlaying && !isLoading}
 			class:animate-pulse={isLoading}
