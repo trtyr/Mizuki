@@ -19,25 +19,25 @@ export const zh_TW: Translation = {
 	[Key.recentPosts]: "最新文章",
 	[Key.postList]: "文章列表",
 	[Key.tableOfContents]: "目錄",
-	[Key.tocEmpty]: "當前頁面沒有目錄",
+	[Key.tocEmpty]: "此頁無目錄",
 
 	// 公告欄
 	[Key.announcement]: "公告",
 	[Key.announcementClose]: "關閉",
 
 	[Key.comments]: "評論",
-	[Key.friends]: "友鏈",
+	[Key.friends]: "友站",
 	[Key.friendsSubtitle]: "發現更多優秀網站",
-	[Key.friendsSearchPlaceholder]: "搜索友鏈名稱或描述...",
+	[Key.friendsSearchPlaceholder]: "搜尋友站名稱或描述...",
 	[Key.friendsFilterAll]: "全部",
-	[Key.friendsNoResults]: "未找到匹配的友鏈",
-	[Key.friendsVisit]: "訪問",
-	[Key.friendsCopyLink]: "複製鏈接",
+	[Key.friendsNoResults]: "找不到相關友站",
+	[Key.friendsVisit]: "拜訪",
+	[Key.friendsCopyLink]: "複製連結",
 	[Key.friendsCopySuccess]: "已複製",
 	[Key.friendsTags]: "標籤",
-	[Key.untitled]: "無標題",
+	[Key.untitled]: "沒有標題",
 	[Key.uncategorized]: "未分類",
-	[Key.noTags]: "無標籤",
+	[Key.noTags]: "沒有標籤",
 
 	[Key.wordCount]: "字",
 	[Key.wordsCount]: "字",
@@ -50,7 +50,7 @@ export const zh_TW: Translation = {
 
 	[Key.lightMode]: "亮色",
 	[Key.darkMode]: "暗色",
-	[Key.systemMode]: "跟隨系統",
+	[Key.systemMode]: "自動",
 
 	[Key.more]: "更多",
 
@@ -60,19 +60,19 @@ export const zh_TW: Translation = {
 	[Key.anime]: "追番",
 	[Key.diary]: "日記",
 
-	// 設備頁面
-	[Key.devices]: "我的設備",
-	[Key.devicesSubtitle]: "這裡展示了我日常使用的各類設備",
+	// 裝置頁面
+	[Key.devices]: "我的裝置",
+	[Key.devicesSubtitle]: "這裡展示了我日常使用的各種裝置",
 	[Key.devicesViewDetails]: "查看詳情",
 
 	// 番劇頁面
 	[Key.animeTitle]: "我的追番記錄",
 	[Key.animeSubtitle]: "記錄我的二次元之旅",
-	[Key.animeStatusWatching]: "在看",
-	[Key.animeStatusCompleted]: "看過",
-	[Key.animeStatusPlanned]: "想看",
-	[Key.animeStatusOnHold]: "擱置",
-	[Key.animeStatusDropped]: "拋棄",
+	[Key.animeStatusWatching]: "觀看中",
+	[Key.animeStatusCompleted]: "已完成",
+	[Key.animeStatusPlanned]: "打算看",
+	[Key.animeStatusOnHold]: "暫置中",
+	[Key.animeStatusDropped]: "已放棄",
 	[Key.animeFilterAll]: "全部",
 	[Key.animeYear]: "年份",
 	[Key.animeStudio]: "製作",
@@ -87,18 +87,18 @@ export const zh_TW: Translation = {
 
 	// 短文頁面
 	[Key.diarySubtitle]: "隨時隨地，分享生活",
-	[Key.diaryNoResults]: "沒有匹配的日記",
+	[Key.diaryNoResults]: "沒有相符的日記",
 	[Key.diaryCount]: "條日記",
 
-	[Key.diaryTips]: "只展示最近30條日記",
+	[Key.diaryTips]: "只展示最近 30 個日記",
 	[Key.diaryMinutesAgo]: "分鐘前",
 	[Key.diaryHoursAgo]: "小時前",
 	[Key.diaryDaysAgo]: "天前",
 
 	// 404頁面
 	[Key.notFound]: "404",
-	[Key.notFoundTitle]: "頁面未找到",
-	[Key.notFoundDescription]: "抱歉，您訪問的頁面不存在或已被移動。",
+	[Key.notFoundTitle]: "找不到頁面",
+	[Key.notFoundDescription]: "抱歉，您想要尋找的頁面不存在或已被搬移。",
 	[Key.backToHome]: "返回首頁",
 
 	// 音樂播放器
@@ -106,35 +106,35 @@ export const zh_TW: Translation = {
 	[Key.musicPlayerShow]: "顯示音樂播放器",
 	[Key.musicPlayerHide]: "隱藏播放器",
 	[Key.musicPlayerExpand]: "展開音樂播放器",
-	[Key.musicPlayerCollapse]: "收起播放器",
+	[Key.musicPlayerCollapse]: "折疊播放器",
 	[Key.musicPlayerPause]: "暫停",
 	[Key.musicPlayerPlay]: "播放",
 	[Key.musicPlayerPrevious]: "上一首",
 	[Key.musicPlayerNext]: "下一首",
 	[Key.musicPlayerShuffle]: "隨機播放",
-	[Key.musicPlayerRepeat]: "列表循環",
+	[Key.musicPlayerRepeat]: "清單循環",
 	[Key.musicPlayerRepeatOne]: "單曲循環",
 	[Key.musicPlayerVolume]: "音量控制",
 	[Key.musicPlayerProgress]: "播放進度",
 	[Key.musicPlayerCover]: "封面",
-	[Key.musicPlayerPlaylist]: "播放列表",
+	[Key.musicPlayerPlaylist]: "播放清單",
 	[Key.musicPlayerLoading]: "載入中...",
-	[Key.musicPlayerErrorPlaylist]: "播放列表獲取失敗",
-	[Key.musicPlayerErrorSong]: "當前歌曲載入失敗，嘗試載入下一首",
-	[Key.musicPlayerErrorEmpty]: "播放列表中沒有可用的歌曲",
+	[Key.musicPlayerErrorPlaylist]: "播放列表取得失敗",
+	[Key.musicPlayerErrorSong]: "目前歌曲載入失敗，嘗試載入下一首",
+	[Key.musicPlayerErrorEmpty]: "播放清單中沒有可用的歌曲",
 	[Key.unknownSong]: "未知歌曲",
-	[Key.unknownArtist]: "未知藝術家",
+	[Key.unknownArtist]: "未知作曲者",
 
-	// 相冊頁面
-	[Key.albums]: "相冊",
+	// 相簿頁面
+	[Key.albums]: "相簿",
 	[Key.albumsSubtitle]: "記錄生活中的美好瞬間",
-	[Key.albumsEmpty]: "暫無內容",
-	[Key.albumsEmptyDesc]: "還沒有創建任何相冊，快去添加一些美好的回憶吧！",
-	[Key.albumsBackToList]: "返回相冊",
+	[Key.albumsEmpty]: "沒有相簿",
+	[Key.albumsEmptyDesc]: "還沒有建立任何相冊，快去新增一些美好的回憶吧！",
+	[Key.albumsBackToList]: "返回相簿",
 	[Key.albumsPhotoCount]: "張照片",
 	[Key.albumsPhotosCount]: "張照片",
 	[Key.albumsFilterAll]: "全部",
-	[Key.albumsNoResults]: "沒有匹配的相冊",
+	[Key.albumsNoResults]: "沒有相符的相冊",
 
 	// 專案展示頁面
 	[Key.projects]: "專案展示",
