@@ -63,7 +63,7 @@ export const zh_TW: Translation = {
 	// 裝置頁面
 	[Key.devices]: "我的裝置",
 	[Key.devicesSubtitle]: "這裡展示了我日常使用的各種裝置",
-	[Key.devicesViewDetails]: "查看詳情",
+	[Key.devicesViewDetails]: "詳細資料",
 
 	// 番劇頁面
 	[Key.animeTitle]: "我的追番記錄",
