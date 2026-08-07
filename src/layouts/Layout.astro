@@ -6,6 +6,7 @@ import ConfigCarrier from "@components/misc/ConfigCarrier.astro";
 import MusicPlayer from "@components/widgets/music-player/MusicPlayer.svelte";
 import CodeGroupManager from "@/components/features/markdown/CodeGroupManager.astro";
 import DiagramManager from "@/components/features/markdown/DiagramManager.astro";
+import MermaidManager from "@/components/features/markdown/MermaidManager.astro";
 import { pioConfig, profileConfig, siteConfig } from "@/config";
 import { resolveFontMode } from "@/utils/fontMode";
 
@@ -14,7 +15,11 @@ const BANNER_HEIGHT_EXTEND = 30;
 const BANNER_HEIGHT_HOME = BANNER_HEIGHT + BANNER_HEIGHT_EXTEND;
 
 import { PAGE_WIDTH } from "../constants/constants";
+import "../styles/variables.styl";
 import "../styles/main.css";
+import "../styles/banner.css";
+import "../styles/transition.css";
+import "../styles/widget-responsive.css";
 import "../styles/mobile-navbar.css";
 import "../styles/wallpaper-navbar-transparent.css";
 import "../styles/fancybox-custom.css";
@@ -245,6 +250,7 @@ const bannerOffset =
 
 		<CodeGroupManager />
 		<DiagramManager />
+		<MermaidManager />
 
 		<!-- increase the page height during page transition to prevent the scrolling animation from jumping -->
 		<div id="page-height-extend" class="hidden h-[300vh]"></div>
