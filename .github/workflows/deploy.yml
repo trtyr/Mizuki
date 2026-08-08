@@ -39,4 +39,4 @@ jobs:
           REGION: ${{ secrets.COS_REGION }}
         run: |
           coscmd config -a $SECRET_ID -s $SECRET_KEY -b $BUCKET -r $REGION -m 30
-          coscmd upload -rs --delete ./dist/ / --ignore "./.git/*"
+          coscmd upload -rsf --delete ./dist/ / --ignore "./.git/*"
