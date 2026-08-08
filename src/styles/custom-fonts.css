@@ -1,0 +1,48 @@
+/* 自定义 @font-face：正文 "blog-body" 中英文分字体 */
+/* 英文/拉丁字符 → JetBrains Mono */
+@font-face {
+	font-family: "blog-body";
+	src: url("/assets/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+		U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+		U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+/* 中文/CJK → 霞鹭文楷 */
+
+	font-display: swap;
+}
+
+/* Bold English */
+@font-face {
+	font-family: "blog-body";
+	src: url("/assets/fonts/jetbrains-mono-latin-700-normal.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+		U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+		U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "blog-body";
+	src: url("/assets/fonts/lxgw-wenkai-latin-500-normal.woff2") format("woff2");
+	font-weight: 500;
+	font-style: normal;
+	unicode-range: U+2E80-2EFF, U+3000-303F, U+31C0-31EF, U+3200-32FF,
+		U+3300-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F,
+		U+FF00-FFEF, U+20000-2FFFF;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "blog-body";
+	src: url("/assets/fonts/lxgw-wenkai-latin-700-normal.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	unicode-range: U+2E80-2EFF, U+3000-303F, U+31C0-31EF, U+3200-32FF,
+		U+3300-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F,
+		U+FF00-FFEF, U+20000-2FFFF;
+	font-display: swap;
+}

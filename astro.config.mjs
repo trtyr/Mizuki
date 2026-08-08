@@ -60,43 +60,6 @@ export default defineConfig({
 					provider: fontProviders.fontsource(),
 					styles: ["normal", "italic"],
 				},
-				{
-					name: "ZenMaruGothic-Medium",
-					cssVariable: "--font-body",
-					provider: fontProviders.local(),
-					options: {
-						variants: [
-							{
-								src: ["./src/assets/fonts/ZenMaruGothic-Medium.woff2"],
-								weight: "500",
-								style: "normal",
-							},
-						],
-					},
-					// These variables are composed into --font-sans below. Keep their
-					// fallback lists empty; otherwise a system fallback after this Latin
-					// font prevents the following CJK font from ever being considered.
-					fallbacks: [],
-					optimizedFallbacks: false,
-				},
-				{
-					name: "Loli",
-					cssVariable: "--font-cjk",
-					provider: fontProviders.local(),
-					options: {
-						variants: [
-							{
-								src: ["./src/assets/fonts/loli.woff2"],
-								weight: "400",
-								style: "normal",
-							},
-						],
-					},
-					// The final system fallback belongs to --font-sans, not this partial
-					// CJK font stack.
-					fallbacks: [],
-					optimizedFallbacks: false,
-				},
 			]
 		: [],
 
@@ -329,6 +292,7 @@ export default defineConfig({
 				"marked",
 				"sanitize-html",
 				"qrcode",
+				"@swup/astro",
 			],
 		},
 		// 预热常用入口文件，让 Vite 在服务器启动后立即开始转换，而不是等到浏览器请求
