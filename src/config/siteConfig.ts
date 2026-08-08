@@ -7,7 +7,7 @@ export const siteConfig: SiteConfig = {
 	title: "Trtyr's Blog",
 	subtitle: "特让他也让的个人博客",
 	siteURL: "https://www.trtyr.top/", // 请替换为你的站点URL，以斜杠结尾
-	siteStartDate: "2025-01-01", // 站点开始运行日期，用于站点统计组件计算运行天数
+	siteStartDate: "2026-08-08", // 站点开始运行日期，用于站点统计组件计算运行天数
 
 	lang: SITE_LANG,
 
@@ -101,7 +101,7 @@ export const siteConfig: SiteConfig = {
 	// 壁纸模式配置
 	wallpaperMode: {
 		// 默认壁纸模式：banner=顶部横幅，fullscreen=全屏壁纸，none=无壁纸
-		defaultMode: "banner",
+		defaultMode: "fullscreen",
 		// 整体布局方案切换按钮显示设置（默认："desktop"）
 		// "off" = 不显示
 		// "mobile" = 仅在移动端显示
