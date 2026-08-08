@@ -14,7 +14,7 @@ tags:
 draft: false
 ---
 
-**来源：** 本文整理自 B 站视频。
+**来源：** 本文整理自 B 站视频，主讲人以 Comprehensive Rust 讲师身份，用一堂「回顾总结」课展开了 Rust 语言背后宏大的设计哲学。
 
 <iframe src="https://player.bilibili.com/player.html?bvid=BV1zLDwYuEQn" width="100%" height="400" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 
