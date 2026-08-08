@@ -135,7 +135,7 @@ export const siteConfig: SiteConfig = {
 
 		carousel: {
 			enable: true,
-			interval: 3,
+			interval: 6,
 			switchable: true,
 		},
 
