@@ -1,2 +1,11 @@
 {"type":"session_rebound","value":{"reason":"startup"},"at":"2026-08-08T07:26:57.700Z"}
 {"type":"state","value":{"goal":null,"list":[],"loop":null,"mainModelRecovery":null,"lastModelRef":"baizhi-person/deepseek-v4-pro"},"at":"2026-08-08T07:27:00.787Z"}
+{"type":"session_shutdown","value":{"reason":"reload"},"at":"2026-08-08T13:39:02.178Z"}
+{"type":"session_rebound","value":{"reason":"reload"},"at":"2026-08-08T13:39:05.804Z"}
+{"type":"session_shutdown","value":{"reason":"quit"},"at":"2026-08-08T16:51:01.521Z"}
+{"type":"session_rebound","value":{"reason":"startup"},"at":"2026-08-08T18:03:59.812Z"}
+{"type":"id_invalidation","value":{"oldId":"019fe02f-a6b4-77ed-b36c-188563387fe0","newId":"019fe28b-bd92-7664-9f90-ca3818bcfde2","reason":"session_shutdown","shutdownReason":"quit","at":"2026-08-08T18:03:59.819Z"},"at":"2026-08-08T18:03:59.819Z"}
+{"type":"session_waiting_for_load","value":{"reason":"startup"},"at":"2026-08-08T18:03:59.819Z"}
+{"type":"session_shutdown","value":{"reason":"resume"},"at":"2026-08-08T18:04:04.402Z"}
+{"type":"session_rebound","value":{"reason":"resume"},"at":"2026-08-08T18:04:06.165Z"}
+{"type":"id_invalidation","value":{"oldId":"019fe28b-bd92-7664-9f90-ca3818bcfde2","newId":"019fe02f-a6b4-77ed-b36c-188563387fe0","reason":"session_shutdown","shutdownReason":"resume","at":"2026-08-08T18:04:06.205Z"},"at":"2026-08-08T18:04:06.205Z"}

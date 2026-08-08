@@ -665,3 +665,34 @@ html {
 :root:not(.dark) .custom-md spoiler {
   --_spoiler-mask: color-mix(in oklch, var(--primary) 55%, white 45%);
 }
+
+/* Mermaid 图表大小控制 */
+.custom-md .mermaid {
+  max-width: 100%;
+  text-align: center;
+  margin: 1.2em auto;
+  overflow: visible;
+}
+.custom-md .mermaid svg {
+  max-width: 380px;
+  height: auto;
+}
+/* Mermaid 外层容器 */
+.custom-md pre.mermaid,
+.custom-md div.mermaid {
+  padding: 0.6em;
+  max-width: 420px;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+/* 段间距 */
+.custom-md p {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  line-height: 2;
+  text-indent: 2em;
+}
+.custom-md p:first-child {
+  margin-top: 0;
+}
