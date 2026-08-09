@@ -8,7 +8,7 @@ export const announcementConfig: AnnouncementConfig = {
 	link: {
 		enable: true, // 启用链接
 		text: "Learn More", // 链接文本
-		url: "/about/", // 链接 URL
+		url: "/about", // 链接 URL
 		external: false, // 内部链接
 	},
 };

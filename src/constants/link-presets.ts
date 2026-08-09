@@ -11,12 +11,12 @@ export const LinkPresets: Record<LinkPreset, NavBarLink> = {
 	},
 	[LinkPreset.About]: {
 		name: i18n(I18nKey.about),
-		url: "/about/",
+		url: "/about",
 		icon: "material-symbols:person",
 	},
 	[LinkPreset.Archive]: {
 		name: i18n(I18nKey.archive),
-		url: "/archive/",
+		url: "/archive",
 		icon: "material-symbols:archive",
 	},
 	[LinkPreset.Friends]: {
@@ -46,7 +46,7 @@ export const LinkPresets: Record<LinkPreset, NavBarLink> = {
 	},
 	[LinkPreset.Skills]: {
 		name: i18n(I18nKey.skills),
-		url: "/skills/",
+		url: "/skills",
 		icon: "material-symbols:psychology",
 	},
 	[LinkPreset.Timeline]: {

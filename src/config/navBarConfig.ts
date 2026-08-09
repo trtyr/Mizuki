@@ -8,7 +8,7 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.Skills,
 		{
 			name: "About",
-			url: "/about/",
+			url: "/about",
 			icon: "material-symbols:info",
 		},
 		{

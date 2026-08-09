@@ -9,3 +9,12 @@
 {"type":"session_shutdown","value":{"reason":"resume"},"at":"2026-08-08T18:04:04.402Z"}
 {"type":"session_rebound","value":{"reason":"resume"},"at":"2026-08-08T18:04:06.165Z"}
 {"type":"id_invalidation","value":{"oldId":"019fe28b-bd92-7664-9f90-ca3818bcfde2","newId":"019fe02f-a6b4-77ed-b36c-188563387fe0","reason":"session_shutdown","shutdownReason":"resume","at":"2026-08-08T18:04:06.205Z"},"at":"2026-08-08T18:04:06.205Z"}
+{"type":"session_shutdown","value":{"reason":"quit"},"at":"2026-08-08T19:13:52.354Z"}
+{"type":"session_rebound","value":{"reason":"startup"},"at":"2026-08-09T09:25:26.517Z"}
+{"type":"id_invalidation","value":{"oldId":"019fe02f-a6b4-77ed-b36c-188563387fe0","newId":"019fe5d7-5ba2-72cc-b49a-361f7385faa1","reason":"session_shutdown","shutdownReason":"quit","at":"2026-08-09T09:25:26.523Z"},"at":"2026-08-09T09:25:26.523Z"}
+{"type":"session_waiting_for_load","value":{"reason":"startup"},"at":"2026-08-09T09:25:26.523Z"}
+{"type":"session_shutdown","value":{"reason":"resume"},"at":"2026-08-09T09:25:37.828Z"}
+{"type":"session_rebound","value":{"reason":"resume"},"at":"2026-08-09T09:25:38.656Z"}
+{"type":"id_invalidation","value":{"oldId":"019fe5d7-5ba2-72cc-b49a-361f7385faa1","newId":"019fe02f-a6b4-77ed-b36c-188563387fe0","reason":"session_shutdown","shutdownReason":"resume","at":"2026-08-09T09:25:38.728Z"},"at":"2026-08-09T09:25:38.728Z"}
+{"type":"model_switch","value":{"from":"baizhi-person/deepseek-v4-pro","to":"baizhi-team/deepseek-v4-pro","reason":"manual","at":"2026-08-09T09:25:48.453Z","source":"set"},"at":"2026-08-09T09:25:48.453Z"}
+{"type":"state","value":{"goal":null,"list":[],"loop":null,"mainModelRecovery":null,"lastModelRef":"baizhi-team/deepseek-v4-pro"},"at":"2026-08-09T09:25:48.454Z"}
