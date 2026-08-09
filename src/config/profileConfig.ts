@@ -15,5 +15,10 @@ export const profileConfig: ProfileConfig = {
 			icon: "fa7-brands:github",
 			url: "https://github.com/trtyr",
 		},
+		{
+			name: "Email",
+			icon: "fa7-regular:envelope",
+			url: "mailto:z1693309049@outlook.com",
+		},
 	],
 };
