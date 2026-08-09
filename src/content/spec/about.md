@@ -1,6 +1,4 @@
 
-东北人，INTJ，现居上海。
-
-前安全研究员。目前在做 FDE。
+玛卡巴卡，阿卡哇卡，米卡玛卡，呣
 
 ::github{repo="LyraVoid/Mizuki"}
