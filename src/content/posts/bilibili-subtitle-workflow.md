@@ -100,7 +100,7 @@ bili_jct = "你的 bili_jct"
 buvid3 = "你的 buvid3"
 buvid4 = "你的 buvid4"
 dedeuserid = "你的 DedeUserID"
-ac_time_value = ""
+ac_time_value = ""   # 浏览器 cookie 里没有这项，留空即可，不影响拉字幕和下音频
 ```
 
 脚本只读静态 cookie，不自动刷新——过期了就重新抠一次更新这个文件。
