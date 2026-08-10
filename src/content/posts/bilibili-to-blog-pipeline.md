@@ -20,15 +20,15 @@ draft: false
 
 - Apple M1 / 8GB 内存（常年 90%+ 占用，Swap 爆炸）
 - 负责：拉字幕、分析字幕、写文章
-- 工具：`bilibili-subtitle-fetch`（Python CLI）、Pi coding agent
+- 工具：`bilibili-fetch`、`audio-transcribe`、`transcript-to-article`（三条 skill）、Pi coding agent
 
 ### 1.2 Windows 台式机（远程 ASR）
 
 - AMD Ryzen 7 5800H / 16GB 内存
 - 负责：无字幕视频的语音转文字
-- 通过 内网 组网，IP `<内网IP>`，SSH 密码认证（用户 `<用户>`）
-- 预装：Python 3.14.7、uv 0.12.3、ffmpeg
-- ASR 运行时：SenseVoiceSmall (FunASR llama.cpp) + FSMN-VAD
+- 通过 Tailscale 组网（脱敏），SSH 直连
+- 预装：Python 3.14、ffmpeg、torch + transformers（Moonshine 依赖）
+- ASR 运行时：SenseVoiceSmall (FunASR gguf) + FSMN-VAD；Moonshine（PyTorch，英文引擎）
 
 ### 1.3 为什么需要两台机器
 
@@ -41,80 +41,83 @@ M1 的 8GB 内存在日常使用中就常年被 Chrome + OrbStack + 各种工具
 ## 二、整体架构
 
 ```
-┌─────────────────────────────────────────────────┐
-│                    B 站视频链接                    │
-└────────────────────┬────────────────────────────┘
-                     │
-                     ▼
-     ┌───────────────────────────────┐
-     │  bilibili-subtitle-fetch skill │
-     │  Step 1: 尝试直接拉字幕         │
-     │    ├─ 有字幕 → 秒出，走 Mac      │
-     │    └─ 无字幕 → 判断语种          │
-     │         ├─ 中文 → Windows ASR   │
-     │         └─ 英文 → Mac ASR       │
-     └───────────────┬───────────────┘
-                     │
-                     ▼
-     ┌───────────────────────────────┐
-     │  bilibili-video-analysis skill │
-     │  Step 1: 逐段通读字幕做笔记      │
-     │  Step 2: 搜索引用 + 补充代码     │
-     │  Step 3: 结构化写作             │
-     │  Step 4: 输出到 Wiki            │
-     │  Step 5: 回字幕逐项验证         │
-     └───────────────────────────────┘
+                     B 站视频链接
+                          │
+                          ▼
+              ┌────────────────────────┐
+              │      bilibili-fetch    │   B站 → 字幕 / 音频
+              │   尝试拉官方字幕        │
+              │    ├─ 有字幕 → 秒出     │
+              │    └─ 无字幕 → 下音频   │
+              └────┬───────────────┬───┘
+            有字幕  │               │ 无字幕
+                   │               ▼
+                   │   ┌──────────────────────┐
+                   │   │   audio-transcribe    │  任意音频 → 文字
+                   │   │   中文 → SenseVoice   │
+                   │   │   英文 → Moonshine    │
+                   │   └──────────┬───────────┘
+                   │              │
+                   └──────┬───────┘
+                          ▼
+              ┌──────────────────────────┐
+              │   transcript-to-article   │  任意转录 → 文章
+              │  ① 通读，列知识点清单      │
+              │  ② 结构化写作 + 搜索补充   │
+              │  ③ 回转录逐项验证零遗漏    │
+              │  ④ 输出到 Wiki            │
+              └──────────────────────────┘
 ```
 
-两条 skill 各司其职。字幕 skill 完成后**询问用户**是否创建长任务追踪分析流程。
+**三层解耦，各管一段。** 后两层是通用的——`audio-transcribe` 能转任意音频（不限于 B站），`transcript-to-article` 能吃 YouTube 字幕、播客转录、本地文件。这次（08-10）重构的核心，就是把原来绑死 B站的两条 skill 拆开，让转录和写作变成可独立复用的能力。
 
 ---
 
-## 三、字幕获取：先判后跑
+## 三、字幕获取：bilibili-fetch
 
-### 3.1 执行流程
+`bilibili-fetch` 只做一件事——B站视频拿到「字幕文本」或「音频文件」二选一，**不负责转录**。转录交给下一层的 `audio-transcribe`。
 
-字幕 skill 的核心是判断逻辑——能用已有字幕就绝不多跑一秒 ASR：
+### 3.1 实现：自带 venv，输出契约钉死
 
-```bash
-# Step 1: 尝试直接拉字幕（stdout 和 stderr 必须分离）
-bilibili-subtitle-fetch fetch --no-clipboard --output-format text \
-  "https://www.bilibili.com/video/BV1xm42137Y8/" \
-  > /tmp/bilibili_subtitle_BV1xm42137Y8.txt \
-  2>/tmp/bilibili_subtitle_BV1xm42137Y8.log
-
-# Step 2: 判断结果（跳过 INFO 日志行）
-grep -v -E '^\[.*\] (INFO|WARNING|ERROR)' \
-  /tmp/bilibili_subtitle_BV1xm42137Y8.txt | head -5
-```
-
-**注意：** `2>&1` 会把 INFO 日志混进字幕文本。我们第一版就犯了这个错——日志行就撑过了 `wc -l > 5` 的检查。改为 `2>` 分离后，判断用 `grep -v` 跳过日志行。
-
-### 3.2 Windows 远程 ASR 执行流程
-
-对于无字幕的中文视频，走 Windows SenseVoiceSmall：
+第一版用的是外部 Python CLI `bilibili-subtitle-fetch`，判断有没有字幕靠 `2>` 分离 stdout/stderr 再 `grep -v` 跳日志行——脆弱，日志格式一变就失效。重构后 skill 自带 venv（`bilibili-api-python` + `httpx`），用 `Video.get_subtitle`（自动 wbi 签名 + cookie）拉官方字幕，输出契约钉死成两种：
 
 ```bash
-# 传脚本
-scp scripts/bilibili_sensevoice.py \
-  <用户>@<内网IP>:C:\Users\<用户>\pi-asr\scripts\
+cd ~/.pi/agent/skills/public/bilibili-fetch
 
-# 通过 Agent 的异步后台任务工具远程执行
-ssh <用户>@<内网IP> \
-    'chcp 65001 >nul && set PYTHONIOENCODING=utf-8 && \
-     python C:\Users\<用户>\pi-asr\scripts\bilibili_sensevoice.py \
-     BV1xm42137Y8 -o C:\Users\<用户>\pi-asr\output\BV1xm42137Y8_sensevoice.txt'
-
-# 拉回字幕
-scp "<用户>@<内网IP>:C:/Users/<用户>/pi-asr/output/BV1xm42137Y8_sensevoice.txt" /tmp/
+# 拉字幕（脚本内部自动判断有无）
+.venv/bin/python scripts/fetch_subtitle.py "BV1xm42137Y8"
 ```
 
-异步后台执行，完成后自动通知，不阻塞主流程。
+**输出契约：**
 
-Windows SSH 有两个固定坑位：
+- stdout = 字幕文件绝对路径（默认 `/tmp/bilibili_subtitle_<BV>.txt`）→ ✅ 有字幕
+- stdout = `NO_SUBTITLE` → ❌ 无字幕，进步骤 3.2
 
-- **编码：** cmd.exe 默认 GBK，Mac 终端 UTF-8。每条命令前加 `chcp 65001 >nul`
+诊断信息（cid / aid / 字幕条数）全走 stderr，不污染 stdout 的判断。调用方直接看 stdout 是路径还是 `NO_SUBTITLE` 就行，不再靠数行数猜。
+
+> credential 复用 `~/.config/bilibili-subtitle-fetch/config.toml`（`[credential]` 段：sessdata / bili_jct / buvid3 / buvid4 / dedeuserid）。脚本只读静态 cookie，过期就手动更新该文件。
+
+### 3.2 无字幕：audio-transcribe 转录
+
+无字幕时 `bilibili-fetch` 先下音频，再交给 `audio-transcribe`。第一版是手动 `scp` 上传 `bilibili_sensevoice.py` 再 `ssh` 跑，编码、PATH 全要自己处理。重构后封装成一条命令：
+
+```bash
+# bilibili-fetch 下音频
+.venv/bin/python scripts/download_audio.py "BV1xm42137Y8"   # → /tmp/bilibili_<BV>.m4a
+
+# audio-transcribe 一行转录（脚本内部 scp → ssh → scp 拉回）
+bash ~/.pi/agent/skills/public/audio-transcribe/scripts/transcribe_remote.sh \
+  /tmp/bilibili_<BV>.m4a
+```
+
+stdout 直接输出文本路径（默认 `/tmp/<basename>.txt`），进度日志走 stderr。长音频可以挂后台跑，30 分钟音频约 1-2 分钟（~20x 实时）。
+
+脚本内部把编码和 PATH 的坑都处理掉了，但原理值得记一笔（Windows SSH 的两个固定坑位）：
+
+- **编码：** cmd.exe 默认 GBK，Mac 终端 UTF-8。`transcribe.py` 调用前先 `chcp 65001 >nul`
 - **PATH：** 非交互式 SSH 不加载用户 PATH。Python/uv/ffmpeg 全加入系统 PATH（`HKLM\SYSTEM\...\Environment`）
+
+**转录质量先说清楚：** SenseVoiceSmall 输出基本无标点、有少量同音错字（CER 8.17% 的正常水平）、静音段偶尔出乱码幻觉（几句无关的日文假名）。喂给 `transcript-to-article` 写文章前要先清洗——补标点分段、去幻觉段、修明显错字，否则文章质量会被原始文本拖累。
 
 ---
 
@@ -170,35 +173,36 @@ llama-funasr-sensevoice.exe \
 
 不需要 Python 虚拟环境、不需要 PyTorch、不需要 CUDA。单文件二进制，CPU 上 ~20x 实时率。
 
-### 4.4 但我们没直接用二进制
+### 4.4 Moonshine 没丢：降级成英文引擎
 
-因为音频需要从 M4A 转 WAV（SenseVoice 只支持 wav/mp3/flac）。我写了个 Python wrapper（`scripts/bilibili_sensevoice.py`）：
+Moonshine 中文确实不行（CER 29%，比 SenseVoice 差 3.6 倍），但英文表现 OK，所以没被丢掉——在 `audio-transcribe` 里作为**英文/通用引擎**保留下来，跟 SenseVoice 组成双引擎。
+
+### 4.5 落地：audio-transcribe 的 transcribe.py
+
+SenseVoice 是 C++ 二进制，只吃 wav/mp3/flac，得先用 ffmpeg 把下载的 M4A 转成 16kHz 单声道 WAV。转码 + 调引擎 + 存结果的逻辑封装在 `audio-transcribe` 的 `transcribe.py` 里（双引擎，`--engine sensevoice|moonshine` 切换），Mac 端再套一层 `transcribe_remote.sh` 编排 scp → ssh → scp 拉回。核心还是那个转码 + 调用：
 
 ```python
-def transcribe(audio_path: str, out_path: str) -> None:
-    # Step 1: ffmpeg 转码
-    subprocess.run(
-        ["ffmpeg", "-y", "-i", audio_path,
-         "-ar", "16000", "-ac", "1", wav_path],
-        check=True, capture_output=True,
-    )
-    # Step 2: SenseVoiceSmall 转录
-    result = subprocess.run(
-        [binary, "-m", model, "--vad", vad, "-a", wav_path],
-        capture_output=True, text=True,
-        encoding="utf-8", errors="replace",
-    )
-    # Step 3: 保存结果
-    Path(out_path).write_text(result.stdout.strip(), encoding="utf-8")
+# Step 1: 任意格式 → 16kHz mono WAV（SenseVoice 只吃 wav/mp3/flac）
+subprocess.run(
+    ["ffmpeg", "-y", "-i", audio_path, "-ar", "16000", "-ac", "1", wav_path],
+    check=True, capture_output=True,
+)
+# Step 2: SenseVoiceSmall 推理
+result = subprocess.run(
+    [binary, "-m", model, "--vad", vad, "-a", wav_path],
+    capture_output=True, text=True, encoding="utf-8", errors="replace",
+)
 ```
 
-中间踩过一个 GBK 编码坑——`subprocess.run` 默认用系统编码解析输出，Windows 上用 GBK 解析含有中文 emoji 的 UTF-8 输出直接炸了。加了 `encoding="utf-8", errors="replace"` 解决。
+第一版踩过一个 GBK 编码坑——`subprocess.run` 默认用系统编码解析输出，Windows 上用 GBK 解析含有中文 emoji 的 UTF-8 输出直接炸了。加了 `encoding="utf-8", errors="replace"` 解决。Moonshine 那条路是 PyTorch + 满窗切片（15s 片段、7.5s 步长），175 分钟音频约 85 分钟，只在英文音频时才走。
 
 ---
 
-## 五、深度分析：把视频变成文章
+## 五、深度分析：transcript-to-article
 
-### 5.1 核心约束
+转录文本到手后交给 `transcript-to-article`。这个 skill **来源不限**——B站字幕、YouTube 字幕、ASR 转录、播客都能喂，不绑死 B站。核心哲学只有一句：**让文字等价于源内容。**
+
+### 5.1 核心约束（打磨了三版）
 
 这个 skill 反复打磨了三次才找到正确的定位。
 
@@ -206,7 +210,7 @@ def transcribe(audio_path: str, out_path: str) -> None:
 
 **第二版：** 矫枉过正，变成了"视频笔记"——大量"主讲人说""他举了个例子"，读者看到的是一份观后感而非知识文档。
 
-**第三版（最终）：** **让文字等价于视频。** 视频讲什么，文章写什么。主讲人一笔带过的概念（比如"这个 trait 标准叫 embedded-hal"），搜索补充 2-3 句解释，目的是让读者能跟上论证——不是把那概念变成独立科普。
+**第三版（最终）：** **让文字等价于源内容。** 源内容讲什么，文章写什么。主讲人一笔带过的概念（比如“这个 trait 标准叫 embedded-hal”），搜索补充 2-3 句解释，目的是让读者能跟上论证——不是把那概念变成独立科普。
 
 ### 5.2 验证步骤（关键创新）
 
@@ -268,30 +272,38 @@ def transcribe(audio_path: str, out_path: str) -> None:
 ## 八、Skills 文件结构
 
 ```
-.pi/agent/skills/
-├── bilibili-subtitle-fetch/
-│   ├── SKILL.md                          # 获取字幕的完整流程
+~/.pi/agent/skills/public/
+├── bilibili-fetch/
+│   ├── SKILL.md                          # B站 → 字幕/音频（不转录）
+│   ├── .venv/                            # 自带：bilibili-api-python + httpx
 │   └── scripts/
-│       ├── bilibili_sensevoice.py        # SenseVoiceSmall wrapper
-│       └── bilibili_moonshine.py         # Moonshine 备选
+│       ├── fetch_subtitle.py             # 拉字幕，输出 路径 / NO_SUBTITLE
+│       └── download_audio.py             # 下载音频 m4a
 │
-└── bilibili-video-analysis/
-    └── SKILL.md                          # 分析写作 + 验证步骤
+├── audio-transcribe/
+│   ├── SKILL.md                          # 任意音频 → 文字（通用）
+│   └── scripts/
+│       ├── transcribe_remote.sh          # Mac 端编排：scp → ssh → scp 拉回
+│       └── transcribe.py                 # Windows 端双引擎（SenseVoice / Moonshine）
+│
+└── transcript-to-article/
+    └── SKILL.md                          # 任意转录 → 深度文章（通用）
 ```
 
 ---
 
 ## 九、总结
 
-这条流水线的核心设计原则只有两条：
+这条流水线核心就三条原则：
 
 1. **先判后跑。** 有字幕绝不跑 ASR。需要 ASR 时选最优方案，不在 Mac 上硬撑
-2. **验证是写文章的一部分。** 不是写完了就完了——必须回字幕逐项核对，补到零遗漏
+2. **三层解耦。** 拿字幕/音频、转录、写作各自独立——后两层通用化，能服务 B站之外的任意音视频
+3. **验证是写文章的一部分。** 不是写完了就完了——必须回转录逐项核对，补到零遗漏
 
-两台机器、两条 skill、一个 ASR 运行时、一个后台任务管理工具。
+两台机器、三层 skill、一个 ASR 运行时。
 
 ## 补充说明
 
-**SSH 工具兼容性。** 某些封装的 SSH 客户端对 Windows cmd.exe 兼容性不好，建议直接用原生 `ssh` 命令。
+**SSH 工具兼容性。** 某些封装的 SSH 客户端对 Windows cmd.exe 兼容性不好，建议直接用原生 `ssh` 命令。`audio-transcribe` 的 `transcribe_remote.sh` 就是全程 ssh 直连。
 
 **ONNX 不适用。** Moonshine 有 ONNX 版本但导出的模型缺 KV cache，`use_cache=True`、`export=True` 等参数均无法修复——查了 optimum 的 GitHub issue 确认是已知限制。且 ONNX 相比 PyTorch 提速有限，不值得折腾。
