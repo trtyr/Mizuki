@@ -20,7 +20,36 @@ export interface Project {
 }
 
 // 在此处添加你的项目
-export const projectsData: Project[] = [];
+export const projectsData: Project[] = [
+	{
+		id: "learnsys",
+		title: "learnsys · 学习系统",
+		description:
+			"本地优先的个人学习系统。目标→路径→模块→卡片→复习→掌握度→画像的闭环，SM-2 间隔重复。",
+		image: "",
+		category: "web",
+		techStack: ["Rust", "Axum", "React", "TypeScript", "SQLite"],
+		status: "in-progress",
+		sourceCode: "https://github.com/trtyr/learnsys",
+		startDate: "2026-08-14",
+		featured: true,
+		showImage: false,
+	},
+	{
+		id: "project-manage",
+		title: "project-manage · 项目跟踪管理",
+		description:
+			"把客户、项目、沟通、任务集中到一处。Rust/Axum + React/TS + PostgreSQL，编译期类型安全 SQL。",
+		image: "",
+		category: "web",
+		techStack: ["Rust", "Axum", "React", "TypeScript", "PostgreSQL"],
+		status: "in-progress",
+		sourceCode: "https://github.com/trtyr/project-manage",
+		startDate: "2026-07-16",
+		featured: true,
+		showImage: false,
+	},
+];
 
 // Get project statistics
 export const getProjectStats = () => {

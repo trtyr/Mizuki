@@ -21,27 +21,27 @@ export const LinkPresets: Record<LinkPreset, NavBarLink> = {
 	},
 	[LinkPreset.Friends]: {
 		name: i18n(I18nKey.friends),
-		url: "/friends/",
+		url: "/friends",
 		icon: "material-symbols:group",
 	},
 	[LinkPreset.Anime]: {
 		name: i18n(I18nKey.anime),
-		url: "/anime/",
+		url: "/anime",
 		icon: "material-symbols:movie",
 	},
 	[LinkPreset.Diary]: {
 		name: i18n(I18nKey.diary),
-		url: "/diary/",
+		url: "/diary",
 		icon: "material-symbols:book",
 	},
 	[LinkPreset.Albums]: {
 		name: i18n(I18nKey.albums),
-		url: "/albums/",
+		url: "/albums",
 		icon: "material-symbols:photo-library",
 	},
 	[LinkPreset.Projects]: {
 		name: i18n(I18nKey.projects),
-		url: "/projects/",
+		url: "/projects",
 		icon: "material-symbols:work",
 	},
 	[LinkPreset.Skills]: {
@@ -51,12 +51,12 @@ export const LinkPresets: Record<LinkPreset, NavBarLink> = {
 	},
 	[LinkPreset.Timeline]: {
 		name: i18n(I18nKey.timeline),
-		url: "/timeline/",
+		url: "/timeline",
 		icon: "material-symbols:timeline",
 	},
 	[LinkPreset.AITools]: {
 		name: i18n(I18nKey.aiTools),
-		url: "/ai-tools/",
+		url: "/ai-tools",
 		icon: "material-symbols:smart-toy",
 	},
 };
